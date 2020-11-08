@@ -1,0 +1,19 @@
+
+      <div class="small-container single-product">
+          <div class="row">
+            <div class="col-2">
+                <img src="<%= product.image %>">
+            </div>
+            <div class="col-2">
+                <h2><%= product.title %> </h3>
+                <h4><%= (product.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %> </h4>
+                <% if(product.status == 'het'){ %>
+                    <span>( Tạm hết hàng )</span>
+                <% }else{ %>  
+                <a data-product="<%= JSON.stringify(product)%>" class="btn-1 btn add-to-cart">Thêm sản phẩm</a>
+                <% } %> 
+                <h3>Mô tả sản phẩm</h3><br>
+                <p><%= product.description %></p>
+            </div>
+          </div>
+      </div>

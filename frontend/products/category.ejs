@@ -1,0 +1,60 @@
+<div class="categories">
+    <div class="small-container">
+      <div class="row row-2">
+        <% x.forEach(category=>{ %>
+          <% if(messages.category == category.link){ %> 
+            <h2><%= category.name %></h2>
+          <% } %> 
+            <% }) %>
+        <div class="form-search">
+          <form action="/category/search/<%= messages.category %>" method="get">
+            <input type="text" name="q" class="search" value="<%= messages.q %>">
+            <input type="submit" class="btn-search" value="Tìm kiếm">
+          </form>
+        </div>
+        <div class="drop-down">
+          <span>Danh mục</span>
+            <ul>
+              <% x.forEach(category=>{ %>
+                <li><a href="/category/<%= category.link %>"><%= category.name %></a></li>
+              <% }) %>
+              </ul>
+        </div>
+      </div>
+      <% if(messages.error){ %>
+        <span><%= messages.error %></span>
+      <% }else{ %>  
+      
+      <div class="row">
+        <% records.forEach(product=>{ %>
+        <div class="col-4">
+          <div class="new-box">
+            <img src="<%= product.image %>">
+            <div class="new-link">
+              <a href="/products/view/<%= product._id %>" class="button">XEM SẢN PHẨM</a>
+            </div>
+          </div>
+          <p id="gia"><%= (product.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></p>
+        </div>
+        <% }) %>
+      </div>
+      <div class="page-btn">
+        <% if(page>1){ %>
+        <a href="?page=<%= page-1 %>">&laquo;</a>
+        <% } %>
+        <% for(let i = 1; i <= totalPages; i++){ %>
+        <% if(i != page){ %>
+        <% if(i>page-3&&i<page+3){ %>
+        <a href="?page=<%= i %>"><%= i %></a>
+        <% } %>
+        <% }else{ %>
+        <a href=""><%= i %></a>
+        <% } %>
+        <% } %>
+        <% if(page<totalPages-2){ %>
+        <a href="?page=<%= page+1 %>">&raquo;</a>
+        <% } %>
+      </div>
+    <% } %> 
+    </div>
+  </div>

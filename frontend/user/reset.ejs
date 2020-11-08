@@ -1,0 +1,21 @@
+
+  <div class="account-page">
+    <div class="container">
+        <div class="form-container">
+            <h3>Lấy lại mật khẩu</h3><br>
+            <% if(messages.success){ %> 
+              <small id="success"><%= messages.success %></small><br>
+              <a href="/login" class="btn-1">Đăng nhập</a>
+            <% }else{ %> 
+            <form action="/resetpassword/<%= messages.q %>" method="POST">
+              <% if(messages.error){ %>
+                <small id="err"><%= messages.error %> </small>
+                <% } %>
+                <input type="password" placeholder="Nhập mật khẩu" name="password">
+                <input type="password" placeholder="Nhập lại mật khẩu" name="conf_password">
+                <button type="submit" class="btn-1">Thay đổi mật khẩu</button>
+            </form>
+          <% } %> 
+        </div>
+    </div>
+</div>

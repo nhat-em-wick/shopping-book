@@ -1,0 +1,18 @@
+<div class="account-page">
+	<div class="container">
+		<div class="form-container">
+			<h3>Thêm danh mục</h3>
+			<form action="/admin/addcategory" method="POST">
+				<% if(messages.error){ %> 
+				<small id="err"><%= messages.error %> </small>
+                <% }else{ %> 
+                    <small id="success"><%= messages.success %></small>
+                <% } %> 
+				  <input type="text" name="name" placeholder="Tên danh mục">
+				  <input type="text" name="link" placeholder="link">
+				  <button type="submit" class="btn-1">Thêm</button>
+				  <a href="/admin/products">Trở về</a>
+			  </form>
+		</div>
+	</div>
+</div>

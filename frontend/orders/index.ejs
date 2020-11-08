@@ -1,0 +1,58 @@
+<div class="small-container cart-page">
+  <div class="cart-title">
+    <h2>Đơn hàng của tôi</h2>
+  </div>
+  <% if(messages.success){ %>
+  <small id="success"><%= messages.success %></small>
+  <% } %>
+  <table class="order">
+    <tr>
+      <th>Mã đơn hàng</th>
+      <th>Ngày mua</th>
+      <th>Sản phẩm</th>
+      <th>Tổng tiền</th>
+      <th>Trạng thái</th>
+      <th>Hủy đơn hàng</th>
+    </tr>
+    <% if(orders.length){ %>
+    <% orders.forEach(order => { %>
+    <tr class="item">
+      <td>
+        <a href="/orders/status/<%= order._id%>"><%= order._id%></a>
+      </td>
+      <td>
+        <%= moment(order.createdAt).format('Do MMMM YYYY') %>
+      </td>
+      <td>
+        <% for (let product of Object.values(order.items)) { %>
+        <%= product.item.title %><br>
+        <% } %>
+      </td>
+      <td><%= order.totalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></td>
+      <td>
+        <% if(order.status=='dat_hang'){ %>
+        Đã đặt hàng
+        <% }else if(order.status=='xac_nhan'){ %>
+        Đã xác nhận
+        <% }else if(order.status=='ban_giao'){ %>
+        Đã bàn giao
+        <% }else if(order.status=='van_chuyen'){ %>
+        Đang vận chuyển
+        <% }else{ %>
+        Giao hàng thành công
+        <% } %>
+      </td>
+      <td>
+        <% if(order.status === 'dat_hang') {%>
+        <form action="/cancelorder/<%= order._id %>?_method=DELETE" method="POST">
+          <button type="submit" class="btn-cancel">Hủy</button>
+        </form>
+        <% } %>
+      </td>
+    </tr>
+    <% }); %>
+    <% }else{ %>
+    <span>Không có đơn hàng</span>
+    <% } %>
+  </table>
+</div>

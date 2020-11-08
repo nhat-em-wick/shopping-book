@@ -1,0 +1,20 @@
+<div class="account-page">
+    <div class="container">
+        <div class="form-container">
+            <h3>Thêm sản phẩm</h3>
+            <form action="/admin/products/add" method="POST" enctype="multipart/form-data">
+                <input type="text" placeholder="Tên sản phẩm" name="title">
+                <textarea name="description"  cols="33" rows="5" placeholder="Mô tả sản phẩm"></textarea>
+                <input type="text" placeholder="Giá" name="price">
+                <input type="text" placeholder="Tổng số lượng" name="totalQty">
+                <input type="file" name="mybook" class="input-file" accept="image/png, image/jpeg, image/jpg, image/gif">
+                <select name="category">
+                    <% categories.forEach(category => { %>
+                    <option value="<%= category._id %>"><%= category.name %></option>
+                    <% }); %> 
+                </select>
+                <button type="submit" class="btn-1">Thêm sản phẩm</button>
+            </form>
+        </div>
+    </div>
+</div>

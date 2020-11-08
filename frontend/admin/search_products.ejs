@@ -1,0 +1,82 @@
+
+  <div class="container">
+    <div class="row row-3">
+      <h2>Sản phẩm</h2>
+      <div class="form-search">
+        <form action="/admin/products/search" method="get">
+          <input type="text" name="q" class="search" placeholder="Tên sản phẩm" value="<%= messages.q %>">
+          <input type="submit" class="btn-search" value="Tìm kiếm">
+        </form>
+      </div>
+      <a href="/admin/products/add" class="btn-edit">Thêm sản phẩm</a>
+    </div>
+    <% if(messages.error){ %>
+        <span><%= messages.error %></span>
+    <% }else{ %>  
+    <div class="admin-container">
+      <ul class="admin-menu">
+        <li><a href="/admin/users">Khách hàng</a></li>
+        <li><a href="/admin/products">Sản phẩm</a></li>
+        <li><a href="/admin/orders">Đơn hàng</a></li>
+      </ul>
+      <div class="admin-content">
+        <div class="content">
+          <table class="order">
+            <tr>
+              <th>Mã</th>
+              <th>Hình ảnh</th>
+              <th>Sản phẩm</th>
+              <th>Giá</th>
+              <th>Tổng số lượng</th>
+              <th>Trạng thái</th>
+              <th>Hành động</th>
+            </tr>
+            <% records.forEach(product => { %>
+            <tr class="item">
+              <td>
+                <%= product._id %>
+              </td>
+              <td>
+                <img src="<%= product.image%>" width="50px" height="100px">
+              </td>
+              <td><%= product.title %></td>
+              <td><%= product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %> </td>
+              <td><%= product.totalQty %></td>
+              <td>
+                <select>
+                  <option value="">Còn hàng</option>
+                  <option value="">Hết hàng</option>
+                </select>
+              </td>
+              <td>
+                <a href="/admin/products/edit/<%= product._id %>" class="btn-edit">Sửa</a>
+                <form action="/admin/products/<%= product._id %>?_method=DELETE" method="post">
+                  <button type="submit" class="btn-cancel">Xóa</button>
+                </form>
+              </td>
+            </tr>
+            <% }); %>
+          </table>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="page-btn">
+      <% if(page>1){ %>
+          <a href="?page=<%= page-1 %>">&laquo;</a>
+          <% } %>
+          <% for(var i = 1; i <= totalPages; i++){ %>
+          <% if(i != page){ %>
+          <% if(i>page-3&&i<page+3){ %>
+          <a href="?page=<%= i %>"><%= i %></a>
+          <% } %>
+          <% }else{ %>
+          <a href=""><%= i %></a>
+          <% } %>
+          <% } %>
+          <% if(page<totalPages-2){ %>
+          <a href="?page=<%= page+1 %>">&raquo;</a>
+          <% } %>
+  </div>
+  </div>
+<% } %> 

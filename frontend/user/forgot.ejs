@@ -1,0 +1,21 @@
+
+    <div class="account-page">
+        <div class="container">
+            <div class="form-container">
+                <h3>Quên mật khẩu</h3>
+                <form action="/forgotpassword" method="POST">
+                  <% if(messages.error){ %>
+                    <small id="err"><%= messages.error %></small>
+                    <% } %>
+                    <% if(messages.success){ %>
+                    <small id="success"><%= messages.success %></small>
+                    <% } %>
+                    <input type="email" placeholder="Nhập email để lấy lại mật khẩu" name="email" value="<%= messages.email %>">
+                    <button type="submit" class="btn-1">Gửi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+     
+
+   

@@ -1,0 +1,91 @@
+
+    <div class="container">
+        <div class="row row-3">
+            <h2>Các đơn hàng</h2>
+            <div class="form-search">
+              <form action="/admin/orders/search" method="get">
+                  <input type="text" name="q" class="search" placeholder="SĐT">
+                 <input type="submit" class="btn-search" value="Tìm kiếm">
+              </form>
+          </div>
+        </div>
+        <div class="admin-container">
+               <ul class="admin-menu">
+                   <li><a href="/admin/users">Khách hàng</a></li>
+                   <li><a href="/admin/products">Sản phẩm</a></li>
+                   <li><a href="/admin/orders">Đơn hàng</a></li>
+               </ul>
+            <div class="admin-content">
+                <div class="content">
+                    <table class="order">
+                        <tr>
+                            <th>Mã đơn hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Sản phẩm</th>
+                            <th>SĐT</th>
+                            <th>Địa chỉ</th>
+                            <th>
+                                Ngày đặt hàng</th>
+                            <th>Trạng thái</th>
+                            <th>Hoạt động</th>
+                        </tr>
+                        <% records.forEach(order => { %>
+                        <tr class="item">
+                            <td>
+                              <%= order._id%>
+                            </td>
+                            <td>
+                              <%= order.customerId.name %>
+                            </td>
+                            <td>
+                              <% for (let product of Object.values(order.items)) { %>
+                                <%= product.item.title %><br>
+                                <% } %>
+                            </td>
+                            <td><%= order.phone %></td>
+                            <td><%= order.address %></td>
+                            <td><%= x(order.createdAt).format('Do MMMM YYYY') %></td>
+                            <td>
+                              <form action="/admin/orders/status" method="post">
+                              <input type="hidden" name="orderId" value="<%= order._id %>">
+                              <select name="status" onchange="this.form.submit()">
+                                    <option value="dat_hang" <%= order.status == 'dat_hang' ? 'selected' :''%> >Đặt hàng thành công</option>
+                                    <option value="xac_nhan" <%= order.status == 'xac_nhan' ? 'selected' :''%>>Đã tiếp nhận</option>
+                                    <option value="ban_giao" <%= order.status == 'ban_giao' ? 'selected' :''%>>Bàn giao vận chuyển</option>
+                                    <option value="van_chuyen" <%= order.status == 'van_chuyen' ? 'selected' :''%>>Đang vận chuyển</option>
+                                    <option value="thanh_cong" <%= order.status == 'thanh_cong' ? 'selected' :''%>>Giao hàng thành công</option> 
+                                </select>
+                              </form>
+                            </td>
+                            <td>
+                                <form action="/admin/orders/<%= order._id %>?_method=DELETE" method="POST">
+                                    <button type="submit" class="btn-cancel">Xóa</button>
+                                </form>
+                            </td> 
+                        </tr>
+                        <% }); %>
+                        </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="page-btn">
+          <% if(page>1){ %>
+              <a href="?page=<%= page-1 %>">&laquo;</a>
+              <% } %>
+              <% for(var i = 1; i <= totalPages; i++){ %>
+              <% if(i != page){ %>
+              <% if(i>page-3&&i<page+3){ %>
+              <a href="?page=<%= i %>"><%= i %></a>
+              <% } %>
+              <% }else{ %>
+              <a href=""><%= i %></a>
+              <% } %>
+              <% } %>
+              <% if(page<totalPages-2){ %>
+              <a href="?page=<%= page+1 %>">&raquo;</a>
+              <% } %>
+      </div>
+    </div>
+</body>
+</html>

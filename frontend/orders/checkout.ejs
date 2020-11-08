@@ -1,0 +1,17 @@
+<div class="account-page">
+  <div class="container">
+    <div class="form-container">
+      <div class="form-btn">
+        <span>Nhập thông tin</span>
+      </div>
+      <form action="/orders" method="POST">
+        <% if(messages.error){ %>
+        <small id="err"><%= messages.error %></small>
+        <% } %>
+        <input type="text" placeholder="SĐT" name="phone" value="<%= messages.phone %>">
+        <input type="text" placeholder="Địa chỉ" name="address" value="<%= messages.address %>">
+        <button type="submit" class="btn-1">Đặt hàng</button>
+      </form>
+    </div>
+  </div>
+</div>

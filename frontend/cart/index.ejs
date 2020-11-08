@@ -1,0 +1,73 @@
+<% if(!session.cart || session.cart.totalPrice == 0){ %>
+    <div class="container no-item">
+      <img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1604854464/images_bbrcff.png">
+      <span>Không có sản phẩm nào trong giỏ hàng</span><br>
+      <a href="/products" class="btn-1">Tiếp tục mua sắm</a>
+    </div>
+    <% }else{ %>
+    <div class="small-container cart-page">
+        <div class="cart-title">
+            <h2>Giỏ hàng</h2>
+            <span>(<%= session.cart.totalQty %>  sản phẩm)</span>
+        </div>
+        <table>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+            </tr>
+            <% for(let product of Object.values(session.cart.items)){ %>
+            <tr class="item">
+                <td>
+                    <div class="cart-info">
+                        <img src="<%= product.item.image%>">
+                        <div>
+                            <p><%= product.item.title %></p>
+                            <small>Giá: <%= (product.item.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></small><br>
+                            <a href="/cart/remove/<%= product.item._id %>">Xóa</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                 <div class="cart-qty">
+                  <form action="/decrease" method="post">
+                    <input type="hidden" name="price" value="<%= product.item.price %>">
+                    <input type="hidden" name="_id" value="<%= product.item._id %>">
+                    <button type="submit" class="btn-in-de">-</button>
+                  </form>
+                  <span><%= product.qty %></span>
+                  <form action="/increase" method="post">
+                    <input type="hidden" name="price" value="<%= product.item.price %>">
+                    <input type="hidden" name="_id" value="<%= product.item._id %>">
+                    <button type="submit" class="btn-in-de">+</button>
+                  </form>
+                 </div>
+                </td>
+                <td><%= (product.item.price * product.qty).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></td>
+            </tr>
+          <% } %> 
+        </table>
+          <div class="total-price">
+            <table>
+                <tr>
+                    <td>Thành tiền</td>
+                    <td><%= (session.cart.totalPrice).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></td>
+                </tr>
+            </table>
+        </div>
+        <div class="total-price">
+          <% if(session.cart){ %>
+            <% if(!session.user){ %>
+          <a href="/login" class="btn-1">Đăng nhập để thanh toán</a>
+          <% }else{ %>
+          <a href="/checkout" class="btn-1">Tiến hành đặt hàng</a>
+          <% } %>
+          <% } %>
+        </div>
+    </div>
+  <% } %> 
+  
+     
+
+
+  

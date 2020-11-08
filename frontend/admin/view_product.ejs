@@ -1,0 +1,18 @@
+<div class="account-page">
+  <div class="container">
+      <div class="form-container">
+          <div class="form-btn">
+              <span>Xem sản phẩm</span>
+          </div>
+          <div class="view-product">
+              <img src="<%= product.image %>" width="100px" height="200px">
+              <span>Tên sản phẩm: <%= product.title %></span>
+              <span>Giá: <%= product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})%></span>
+              <span>Tổng số lượng: <%= product.totalQty %></span>
+              <span>Danh mục: <%= product.category.name %></span>
+          </div>
+            <a href="/admin/products/edit/<%= product._id %>" class="btn-edit">Sửa</a>
+            <a href="/admin/products" class="btn-cancel">Quay lại</a>
+      </div>
+  </div>
+</div>

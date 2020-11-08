@@ -1,0 +1,72 @@
+
+    <div class="container">
+        <div class="row row-3">
+            <h2>Khách hàng</h2>
+            <div class="form-search">
+              <form action="/admin/users/search" method="get">
+                  <input type="text" name="q" class="search" placeholder="email" value="<%= messages.q %>">
+                 <input type="submit" class="btn-search" value="Tìm kiếm">
+              </form>
+          </div>
+        </div>
+        <% if(messages.success){ %>
+            <span id="success"><%= messages.success %> </span>
+        <% } %>  
+        <div class="admin-container">
+               <ul class="admin-menu">
+                   <li><a href="/admin/users">khách hàng</a></li>
+                   <li><a href="/admin/products">Sản phẩm</a></li>
+                   <li><a href="/admin/orders">Đơn hàng</a></li>
+               </ul>
+            <div class="admin-content">
+                <div class="content">
+                    <table class="order">
+                        <tr>
+                            <th>Mã khách hàng</th>
+                            <th>Email</th>
+                            <th>Tên</th>
+                            <th>Hành động</th>
+                        </tr>
+                        <% records.forEach(user => { %>
+                        <tr class="item">
+                            <td>
+                                <%= user._id %>
+                            </td>
+                            <td>
+                                <%= user.email %>
+                            </td>
+                            <td><%= user.name %></td>
+                            
+                            <td>
+                                <form action="/admin/deleteuser/<%= user._id %>?_method=DELETE" method="POST">
+                                    <button type="submit" class="btn-cancel">Xóa</button>
+                                </form>
+                            </td> 
+                        </tr>
+                        <% }); %>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="page-btn">
+            <% if(page>1){ %>
+                <a href="?page=<%= page-1 %>">&laquo;</a>
+                <% } %>
+                <% for(var i = 1; i <= totalPages; i++){ %>
+                <% if(i != page){ %>
+                <% if(i>page-3&&i<page+3){ %>
+                <a href="?page=<%= i %>"><%= i %></a>
+                <% } %>
+                <% }else{ %>
+                <a href=""><%= i %></a>
+                <% } %>
+                <% } %>
+                <% if(page<totalPages-2){ %>
+                <a href="?page=<%= page+1 %>">&raquo;</a>
+                <% } %>
+        </div>
+    </div>
+</body>
+</html>

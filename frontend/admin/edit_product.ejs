@@ -1,0 +1,22 @@
+<div class="account-page">
+    <div class="container">
+        <div class="form-container">
+            <h3>Sửa sản phẩm</h3>
+            <form action="/admin/products/edit/<%= product._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                <input type="text" placeholder="Tên sản phẩm" name="title" value="<%= product.title %>">
+                <textarea name="description"  cols="33" rows="3" placeholder="Mô tả sản phẩm"><%= product.description %></textarea>
+                <input type="text" placeholder="Giá" name="price" value="<%= product.price %>">
+                <input type="text" placeholder="Tổng số lượng" name="totalQty" value="<%= product.totalQty %>">
+                <input type="file" name="mybook" class="input-file" accept="image/png, image/jpeg, image/jpg, image/gif">
+                <select name="category">
+                    <% categories.forEach(category => { %>
+                    <option value="<%= category._id %>"><%= category.name %></option>
+                    <% }); %> 
+                </select>
+				<button type="submit" class="btn-1">Lưu sản phẩm</button>
+				<a href="/admin/products" class="btn-cancel">Quay lại</a>
+			</form>
+			
+        </div>
+    </div>
+</div>
