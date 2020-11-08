@@ -62,7 +62,7 @@ try {
 } catch {}
 // axios
 async function getProducts() {
- const url = 'http://localhost:3000/listjson'
+ const url = 'https://coder-nhat.herokuapp.com/listjson'
   try {
     const response = await axios.get(url);
     renderProduct(response.data.records)
