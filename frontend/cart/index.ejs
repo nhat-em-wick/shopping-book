@@ -43,7 +43,7 @@
                   </form>
                  </div>
                 </td>
-                <td><%= (product.item.price * product.qty).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></td>
+                <td><%= (product.item.price * product.qty).toLocaleString('de-DE', {style : 'currency', currency : 'VND'}) %></td>
             </tr>
           <% } %> 
         </table>
@@ -51,7 +51,7 @@
             <table>
                 <tr>
                     <td>Thành tiền</td>
-                    <td><%= (session.cart.totalPrice).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></td>
+                    <td><%= (session.cart.totalPrice).toLocaleString('de-DE', {style : 'currency', currency : 'VND'}) %></td>
                 </tr>
             </table>
         </div>
