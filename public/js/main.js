@@ -81,7 +81,7 @@ function renderProduct(products){
             <a href="/products/view/${item._id}" class="button">XEM SẢN PHẨM</a>
           </div>
         </div>
-        <p id="gia"> ${item.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</p>
+        <p id="gia"> ${item.price.toLocaleString('de-DE', {style : 'currency', currency : 'VND'})}</p>
       </div>`
       })
       listHTML.innerHTML = content.join('');
