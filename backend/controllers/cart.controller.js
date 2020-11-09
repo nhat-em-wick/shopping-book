@@ -25,7 +25,7 @@ module.exports.addToCart = (req, res) => {
       totalPrice: req.session.cart.totalPrice
     });
   }catch(e){
-    res.status(500).send(e)
+    res.status(500).send('lỗi server')
   }
   
 };

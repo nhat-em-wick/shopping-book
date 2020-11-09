@@ -27,7 +27,7 @@ module.exports.adminUser = async (req, res) => {
     const users = await userModel.find({ isAdmin: "false" });
     res.render("admin/admin_user", pagination(page, perPage, users));
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -36,7 +36,7 @@ module.exports.myInfo = async (req, res) => {
     const user = await userModel.findById(req.user._id);
     return res.render("user/info", { user: user });
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -68,7 +68,7 @@ module.exports.register = async (req, res) => {
       req.flash("success", "Đăng kí thành công")
       res.redirect("back");
     } catch (e) {
-      res.status(500).send(e);
+      res.status(500).send('lỗi server');
     }
   }
 };
@@ -124,7 +124,7 @@ module.exports.login = async (req, res) => {
       if(user.isAdmin =='true') return res.redirect('/admin/users');
       res.redirect('/');
     } catch (e) {
-     res.status(500).send(e)
+     res.status(500).send('lỗi server')
     }
   }
 };
@@ -144,7 +144,7 @@ module.exports.changeInfo = async (req, res) => {
       req.flash("success", "Thay đổi thành công")
       res.redirect("/my");
     } catch (e) {
-      res.status(500).send(e)
+      res.status(500).send('lỗi server')
     }
 };
 
@@ -154,7 +154,7 @@ module.exports.deleteUser = async (req, res) => {
     req.flash("success", "Xóa thành công")
     res.redirect("/admin/users");
   } catch (e) {
-    res.status(500).send(e)
+    res.status(500).send('lỗi server')
   }
 };
 
@@ -193,7 +193,7 @@ module.exports.forgotPassword = async (req, res) => {
       req.flash("success", "Link đã gửi đến email của bạn");
       res.redirect("/forgotpassword");
     } catch (e) {
-      res.status(500).send(e);
+      res.status(500).send('lỗi server');
     }
   }
 };
@@ -226,7 +226,7 @@ module.exports.resetPassword = async (req, res) => {
         res.redirect("/resetpassword");
       }
     } catch (e) {
-      res.status(500).send(e)
+      res.status(500).send('lỗi server')
     }
   } else {
     req.flash("error", 'Token không hợp lệ');
@@ -281,7 +281,7 @@ module.exports.searchUser = async (req, res) => {
       res.render("admin/admin_user", pagination(page, perPage, matchedUsers));
     }
   }catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 

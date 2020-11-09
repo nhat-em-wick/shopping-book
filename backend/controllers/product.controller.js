@@ -27,7 +27,7 @@ module.exports.searchProduct = async (req, res) => {
       res.render("products/search", pagination(page, perPage, matchedProducts));
     }
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -44,7 +44,7 @@ module.exports.listProduct = async (req, res) => {
       pagination(page, perPage, totalProducts, categories)
     );
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 module.exports.pageAddCategory = (req, res) => {
@@ -62,7 +62,7 @@ module.exports.addCategory = async (req, res) => {
     req.flash("success", "Thêm thành công");
     res.redirect("back");
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -93,7 +93,7 @@ module.exports.categoryProduct = async (req, res) => {
       );
     }
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -133,7 +133,7 @@ module.exports.categoryProductSearch = async (req, res) => {
       );
     }
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -145,7 +145,7 @@ module.exports.listJson = async (req, res) => {
     let totalProducts = await productModel.find();
     res.json(pagination(page, perPage, totalProducts));
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -154,7 +154,7 @@ module.exports.singleProduct = async (req, res) => {
     const product = await productModel.findById(req.params.id);
     res.render("products/singleproduct", { product: product });
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -179,7 +179,7 @@ module.exports.adminSearch = async (req, res) => {
       );
     }
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -191,7 +191,7 @@ module.exports.adminProduct = async (req, res) => {
     let totalProducts = await productModel.find();
     res.render("admin/admin_product", pagination(page, perPage, totalProducts));
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -223,7 +223,7 @@ module.exports.addProduct = async (req, res) => {
     const saveProduct = await product.save();
     res.redirect(`/admin/viewproduct/${saveProduct._id}`);
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -234,7 +234,7 @@ module.exports.showProduct = async (req, res) => {
       .populate("category");
     res.render("admin/view_product", { product: product });
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -247,7 +247,7 @@ module.exports.pageEditProduct = async (req, res) => {
       categories: categories,
     });
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -269,7 +269,7 @@ module.exports.editProduct = async (req, res) => {
     const updateProduct = await product.save();
     res.redirect(`/admin/viewproduct/${updateProduct._id}`);
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -281,7 +281,7 @@ module.exports.updateStatus = async (req, res) => {
     );
     res.redirect("/admin/products");
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -290,6 +290,6 @@ module.exports.deleteProduct = async function (req, res) {
     await productModel.findByIdAndDelete(req.params.id);
     res.redirect("/admin/products");
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };

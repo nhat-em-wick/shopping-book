@@ -23,7 +23,7 @@ module.exports.adminSearch = async (req, res) => {
       res.render("admin/admin_order", pagination(page, perPage, matchedOrders,moment));
     }
   }catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
   
 };
@@ -50,7 +50,7 @@ module.exports.order = async (req, res) => {
     req.flash('success', "Đặt hàng thành công");
     res.redirect("/orders");
   } catch (e) {
-   res.status(500).send(e);
+   res.status(500).send('lỗi server');
   }
 };
 
@@ -64,7 +64,7 @@ module.exports.showOrderUser = async (req, res) => {
     const orders = await orderModel.find({ customerId: id });
     return res.render("orders/index", { orders: orders, moment: moment });
   } catch (err) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -73,7 +73,7 @@ module.exports.statusOrder = async (req, res) => {
     const order = await orderModel.findById(req.params.id);
     res.render("orders/status", { order: order});
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -84,7 +84,7 @@ module.exports.adminOrder = async (req, res) => {
     const orders = await orderModel.find().populate("customerId", "-password");
     res.render("admin/admin_order", pagination(page, perPage, orders, moment));
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -100,7 +100,7 @@ module.exports.cancelOrder = async (req, res) => {
     req.flash('success','Hủy đơn hàng thành công')
     res.redirect("/orders");
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -117,7 +117,7 @@ module.exports.updateStatus = async (req, res) => {
     });
     res.redirect("/admin/orders");
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
 
@@ -126,6 +126,6 @@ module.exports.deleteOrder = async (req, res) => {
     await orderModel.findByIdAndDelete(req.params.id);
     res.redirect("/admin/orders");
   } catch (e) {
-    res.status(500).send(e);
+    res.status(500).send('lỗi server');
   }
 };
