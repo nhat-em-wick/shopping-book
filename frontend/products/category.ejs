@@ -34,7 +34,7 @@
               <a href="/products/view/<%= product._id %>" class="button">XEM SẢN PHẨM</a>
             </div>
           </div>
-          <p id="gia"><%= (product.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></p>
+          <p id="gia"><%= product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></p>
         </div>
         <% }) %>
       </div>

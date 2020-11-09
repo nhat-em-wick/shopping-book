@@ -6,7 +6,7 @@
             </div>
             <div class="col-2">
                 <h2><%= product.title %> </h3>
-                <h4><%= (product.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %> </h4>
+                <h4><%= product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %> </h4>
                 <% if(product.status == 'het'){ %>
                     <span>( Tạm hết hàng )</span>
                 <% }else{ %>  
