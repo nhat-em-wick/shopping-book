@@ -47,7 +47,7 @@ try {
   const slides = document.querySelector(".slider").children;
   const indicatorImg = document.querySelector(".slider-indicator").children;
   for (let i = 0; i < indicatorImg.length; i++) {
-    indicatorImg[i].addEventListener("click", function () {
+    indicatorImg[i].addEventListener("click", ()=> {
       for (let j = 0; j < indicatorImg.length; j++) {
         indicatorImg[j].classList.remove("active");
       }
@@ -86,9 +86,7 @@ function renderProduct(products){
       })
       listHTML.innerHTML = content.join('');
     }catch{
-
     }
-    
 }
  getProducts();
 

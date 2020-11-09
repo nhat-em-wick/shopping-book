@@ -163,7 +163,7 @@ module.exports.adminSearch = async (req, res) => {
   try {
     let totalProducts = await productModel.find();
     let matchedProducts = totalProducts.filter((product) => {
-      return product.title.toLowerCase().indexOf(q.toLowerCase()) !== -1; // neu q nam trong title thi gia tri lon hon -1
+      return removeAscent(product.title).toLowerCase().indexOf(removeAscent(q).toLowerCase()) !== -1; // neu q nam trong title thi gia tri lon hon -1
     });
     let page = parseInt(req.query.page) || 1;
     let perPage = 6; // item in page
