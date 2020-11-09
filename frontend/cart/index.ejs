@@ -23,7 +23,7 @@
                         <img src="<%= product.item.image%>">
                         <div>
                             <p><%= product.item.title %></p>
-                            <small>Giá: <%= (product.item.price).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></small><br>
+                            <small>Giá: <%= product.item.price.toLocaleString('de-DE', {style : 'currency', currency : 'VND'}) %></small><br>
                             <a href="/cart/remove/<%= product.item._id %>">Xóa</a>
                         </div>
                     </div>
