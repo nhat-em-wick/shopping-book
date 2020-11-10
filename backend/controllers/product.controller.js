@@ -122,8 +122,12 @@ module.exports.categoryProductSearch = async (req, res) => {
       );
     });
     if (matchedProductsSearch.length < 1) {
+      req.flash("category", category.replace(/ /g, "-"));
       req.flash("error", `Không tìm thấy sản phẩm: ${q}`);
-      res.render("products/category");
+      res.render(
+        "products/category",
+        pagination(page, perPage, matchedProductsSearch, categories)
+      );
     } else {
       req.flash("category", category.replace(/ /g, "-"));
       req.flash("q", q);

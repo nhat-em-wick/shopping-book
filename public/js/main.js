@@ -60,9 +60,6 @@ try {
     });
   }
 } catch {}
-// axios
-
-
 
 // INFO
 const password = document.querySelector("#password");
