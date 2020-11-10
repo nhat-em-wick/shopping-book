@@ -123,6 +123,7 @@ module.exports.categoryProductSearch = async (req, res) => {
     });
     if (matchedProductsSearch.length < 1) {
       req.flash("category", category.replace(/ /g, "-"));
+      req.flash("q", q);
       req.flash("error", `Không tìm thấy sản phẩm: ${q}`);
       res.render(
         "products/category",
