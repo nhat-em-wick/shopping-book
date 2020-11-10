@@ -2,9 +2,9 @@
 
 :root {
   --header-height: 3rem;
-  --font-medium: 500;
-  --font-semi-bold: 600;
-  --font-bold: 700;
+  --font-medium: 400;
+  --font-semi-bold: 500;
+  --font-bold: 600;
   --dark-color: #141414;
   --dark-color-light: #8a8a8a;
   --dark-color-lighten: #f2f2f2;
