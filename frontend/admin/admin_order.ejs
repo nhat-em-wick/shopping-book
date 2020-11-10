@@ -49,11 +49,11 @@
                               <form action="/admin/orders/status" method="post">
                               <input type="hidden" name="orderId" value="<%= order._id %>">
                               <select name="status" onchange="this.form.submit()">
-                                    <option value="dat_hang" <%= order.status == 'dat_hang' ? 'selected' :''%> >Đặt hàng thành công</option>
-                                    <option value="xac_nhan" <%= order.status == 'xac_nhan' ? 'selected' :''%>>Đã tiếp nhận</option>
-                                    <option value="ban_giao" <%= order.status == 'ban_giao' ? 'selected' :''%>>Bàn giao vận chuyển</option>
-                                    <option value="van_chuyen" <%= order.status == 'van_chuyen' ? 'selected' :''%>>Đang vận chuyển</option>
-                                    <option value="thanh_cong" <%= order.status == 'thanh_cong' ? 'selected' :''%>>Giao hàng thành công</option> 
+                                    <option value="Đặt hàng thành công" <%= order.status == 'Đặt hàng thành công' ? 'selected' :''%> >Đặt hàng thành công</option>
+                                    <option value="Đã xác nhận" <%= order.status == 'Đã xác nhận' ? 'selected' :''%>>Đã xác nhận</option>
+                                    <option value="Bàn giao vận chuyển" <%= order.status == 'Bàn giao vận chuyển' ? 'selected' :''%>>Bàn giao vận chuyển</option>
+                                    <option value="Đang vận chuyển" <%= order.status == 'Đang vận chuyển' ? 'selected' :''%>>Đang vận chuyển</option>
+                                    <option value="Giao hàng thành công" <%= order.status == 'Giao hàng thành công' ? 'selected' :''%>>Giao hàng thành công</option> 
                                 </select>
                               </form>
                             </td>

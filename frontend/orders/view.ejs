@@ -1,0 +1,48 @@
+
+    <div class="small-container cart-page">
+        <div class="cart-title">
+            <h2>Chi tiết đơn hàng #<%= order._id %> - <%= order.status %></h2>
+        </div>
+        <table>
+            <tr>
+                <th>Sản phẩm</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Tạm tính</th>
+            </tr>
+            <% for(let product of Object.values(order.items)){ %>
+            <tr class="item">
+                <td>
+                    <div class="cart-info">
+                        <img src="<%= product.item.image %> ">
+                        <div>
+                            <p><%= product.item.title %></p>
+                            <a href="">Nhận xét sản phẩm</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                  <%= product.item.price %>
+                </td>
+                <td><%= product.qty %></td>
+                <td><%= (product.item.price * product.qty).toLocaleString('de-DE', {style : 'currency', currency : 'VND'}) %></td>
+            </tr>
+            <% } %> 
+        </table>
+        <div class="total-price">
+            <table>
+                <tr>
+                    <td>Tổng cộng</td>
+                    <td><%= order.totalPrice.toLocaleString('de-DE', {style : 'currency', currency : 'VND'}) %></td>
+                </tr>
+            </table>
+        </div>
+        <div class="total-price">
+          <a href="/orders/tracking/<%= order._id %>" class="btn-1">Theo dõi đơn hàng</a>
+        </div>
+    </div>
+
+     
+
+
+  

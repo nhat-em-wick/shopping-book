@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema(
     items: { type: Object, required: true },
     phone: { type: String, required: true },
     address: { type: String, required: true },
-    status: { type: String, default: "dat_hang" },
+    status: { type: String, default: "Đặt hàng thành công" },
     totalQty: { type: Number, default: 1 },
     totalPrice: { type: Number, default: 0 },
   },

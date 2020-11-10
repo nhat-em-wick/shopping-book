@@ -3,34 +3,35 @@
     <h2>Trạng thái đơn hàng</h2>
     <div class="status-text">
       <span>Mã đơn hàng: <b><%= order._id %></b></span>
+      <a href="/orders/view/<%= order._id %>">Xem chi tiết đơn hàng</a>
       <input id="hiddenInput" type="hidden" value="<%= JSON.stringify(order) %>">
     </div>
     <div class="process-bar">
       <ul>
-        <li class="status-line" data-status="dat_hang">
+        <li class="status-line" data-status="Đặt hàng thành công">
           <i class='bx bx1 bx-notepad'></i></i><br>
           <i class='bx bx2 bxs-circle'></i><br>
           <span>Đặt hàng thành công</span>
         </li>
        
-        <li class="status-line" data-status="xac_nhan">
+        <li class="status-line" data-status="Đã xác nhận">
       <i class='bx bx1 bx-check'></i><br>
       <i class='bx bx2 bxs-circle'></i><br>
-      <span>Đã tiếp nhận</span>
+      <span>Đã xác nhận</span>
     
      </li>
-     <li class="status-line" data-status="ban_giao">
+     <li class="status-line" data-status="Bàn giao vận chuyển">
         <i class='bx bx1 bxs-briefcase'></i><br>
         <i class='bx bx2  bxs-circle'></i><br>
         <span>Bàn giao vận chuyển</span>
        </li>
       </li>
-      <li class="status-line" data-status="van_chuyen">
+      <li class="status-line" data-status="Đang vận chuyển">
        <i class='bx bx1 bxs-car'></i><br>
        <i class='bx bx2  bxs-circle'></i><br>
        <span>Đang vận chuyển</span>
       </li>
-      <li class="status-line" data-status="thanh_cong">
+      <li class="status-line" data-status="Giao hàng thành công">
         <i class='bx bx1 bxs-happy'></i><br>
         <i class='bx bx2 bxs-circle'></i><br>
         <span>Giao hàng thành công</span>

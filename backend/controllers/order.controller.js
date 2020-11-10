@@ -68,6 +68,15 @@ module.exports.showOrderUser = async (req, res) => {
   }
 };
 
+module.exports.itemOrder = async (req, res) => {
+  try {
+    const order = await orderModel.findById(req.params.id);
+    return res.render("orders/view", { order: order });
+  } catch (err) {
+    res.status(500).send('lỗi server');
+  }
+};
+
 module.exports.statusOrder = async (req, res) => {
   try {
     const order = await orderModel.findById(req.params.id);

@@ -18,7 +18,7 @@
     <% orders.forEach(order => { %>
     <tr class="item">
       <td>
-        <a href="/orders/status/<%= order._id%>"><%= order._id%></a>
+        <a href="/orders/view/<%= order._id%>"><%= order._id%></a>
       </td>
       <td>
         <%= moment(order.createdAt).format('Do MMMM YYYY') %>
@@ -30,20 +30,10 @@
       </td>
       <td><%= order.totalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %></td>
       <td>
-        <% if(order.status=='dat_hang'){ %>
-        Đã đặt hàng
-        <% }else if(order.status=='xac_nhan'){ %>
-        Đã xác nhận
-        <% }else if(order.status=='ban_giao'){ %>
-        Đã bàn giao
-        <% }else if(order.status=='van_chuyen'){ %>
-        Đang vận chuyển
-        <% }else{ %>
-        Giao hàng thành công
-        <% } %>
+        <%= order.status %>
       </td>
       <td>
-        <% if(order.status === 'dat_hang') {%>
+        <% if(order.status === 'Đặt hàng thành công') {%>
         <form action="/cancelorder/<%= order._id %>?_method=DELETE" method="POST">
           <button type="submit" class="btn-cancel">Hủy</button>
         </form>
