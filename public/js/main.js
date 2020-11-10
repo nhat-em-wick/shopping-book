@@ -61,34 +61,7 @@ try {
   }
 } catch {}
 // axios
-async function getProducts() {
- const url = 'https://coder-nhat.herokuapp.com/listjson'
-  try {
-    const response = await axios.get(url);
-    renderProduct(response.data.records)
-  } catch (error) {
-    console.error(error);
-  }
-}
-function renderProduct(products){
-    const listHTML = document.getElementById('axios');
-    try{
-      let content = products.map((item)=>{
-        return `<div class="col-4">
-        <div class="new-box">
-          <img src="${item.image}">
-          <div class="new-link">
-            <a href="/products/view/${item._id}" class="button">XEM SẢN PHẨM</a>
-          </div>
-        </div>
-        <p id="gia"> ${item.price.toLocaleString('de-DE', {style : 'currency', currency : 'VND'})}</p>
-      </div>`
-      })
-      listHTML.innerHTML = content.join('');
-    }catch{
-    }
-}
- getProducts();
+
 
 
 // INFO
