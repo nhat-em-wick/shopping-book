@@ -119,15 +119,3 @@ function updateStatus(order) {
 
 updateStatus(order);
 
-// REALTIME UPDATE STATUS
-
-let socket = io();
-if (order) {
-  socket.emit("join", `order_${order._id}`);
-}
-
-socket.on("orderUpdated", (data) => {
-  const updatedOrder = { ...order };
-  updatedOrder.status = data.status;
-  updateStatus(updatedOrder);
-});

@@ -3,7 +3,7 @@ const regEmail = /^[A-z0-9]{5,32}\@[a-z]{2,}\.[a-z]{2,5}(\.[a-z]{2,5})?$/;
 const regPass = /^(?=.*[A-z])(?=.*[0-9])([A-z0-9\!\@\#\$\&\*]){8,32}$/;
 const regAddress = /^(?=.*[A-z])(?=.*[0-9])?([A-z0-9\ \.\,\-]){8,}$/g;
 const regPhone = /^0[1-9]{9}$/;
-const regSearch = /^[A-z0-9\ \@\.\-]*[^!#$^<>{}&,; ]$/;
+const regSearch = /^[A-z0-9\ \@\.\-]*[^\!\#\$\^\<\>\{\}\&\,\;\ ]$/;
 const regPrice = /^[0-9]*$/;
 const removeAscent = require('./removeAscent')
 module.exports.checkLogin = (req, res, next) => {

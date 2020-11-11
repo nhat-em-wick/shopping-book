@@ -119,11 +119,6 @@ module.exports.updateStatus = async (req, res) => {
       { _id: req.body.orderId },
       { status: req.body.status }
     );
-    const eventEmitter = req.app.get("eventEmitter");
-    eventEmitter.emit("orderUpdated", {
-      id: req.body.orderId,
-      status: req.body.status,
-    });
     res.redirect("/admin/orders");
   } catch (e) {
     res.status(500).send('lỗi server');

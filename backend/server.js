@@ -8,7 +8,6 @@ const path = require("path");
 const session = require("express-session");
 const MongoDbStore = require("connect-mongo")(session);
 const cors = require("cors");
-const limiter = require('./middleware/rateLimitRequest')
 const methodOverride = require('method-override')
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
@@ -35,7 +34,7 @@ const limitRequest = require('./middleware/rateLimitRequest');
 const sessionLocals = require('./middleware/sessionLocals');
 const setHeader = require('./middleware/setHeader');
 const app = express();
-const Emitter = require('events')
+
 
 app.use(express.static(path.join(`${__dirname},/../public`)));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -47,9 +46,7 @@ app.use(expressLayouts);
 app.use(cookieParser());
 app.use(methodOverride("_method"));
 
-//event emitter
-const eventEmitter = new Emitter();
-app.set('eventEmitter', eventEmitter)
+
 // Session store
 let mongoStore = new MongoDbStore({
   mongooseConnection: connection,
@@ -86,15 +83,3 @@ const port = process.env.PORT;
 const server = app.listen(port, () => {
   console.log(`Server start on ${port}`);
 });
-// socket.io
-const io = require('socket.io')(server)
-io.on('connection', (socket)=>{
-  
-  socket.on('join', (orderId)=>{
-    socket.join(orderId)
-  })
-})
-
-eventEmitter.on('orderUpdated', (data)=>{
-  io.to(`order_${data.id}`).emit('orderUpdated', data);
-})
