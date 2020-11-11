@@ -1,10 +1,13 @@
 const productModel = require("../models/product.model");
 const fs = require("fs");
 const path = require("path");
+const moment = require('moment')
+
 const pagination = require("./pagination");
 const cloudinary = require("../middleware/clouldinary");
 const removeAscent = require("../middleware/removeAscent");
 const categoryModel = require("../models/category.model");
+const commentModel = require("../models/comment.model")
 module.exports.searchProduct = async (req, res) => {
   let q = req.query.q;
   try {
@@ -17,14 +20,13 @@ module.exports.searchProduct = async (req, res) => {
       ); // neu q nam trong title thi gia tri lon hon -1
     });
     let page = parseInt(req.query.page) || 1;
-    let perPage = 8; // item in page
     if (matchedProducts.length < 1) {
       req.flash("error", `Không tìm thấy sản phẩm: "${q}"`);
       req.flash("q", q);
       res.render("products/search");
     } else {
       req.flash("q", q);
-      res.render("products/search", pagination(page, perPage, matchedProducts));
+      res.render("products/search", pagination(page, 8, matchedProducts));
     }
   } catch (e) {
     res.status(500).send('lỗi server');
@@ -36,12 +38,12 @@ module.exports.listProduct = async (req, res) => {
   try {
     // panigation
     const page = parseInt(req.query.page) || 1;
-    const perPage = 12; // item in page
+   
     const categories = await categoryModel.find();
     const totalProducts = await productModel.find();
     res.render(
       "products/index",
-      pagination(page, perPage, totalProducts, categories)
+      pagination(page, 12, totalProducts, categories)
     );
   } catch (e) {
     res.status(500).send('lỗi server');
@@ -68,7 +70,7 @@ module.exports.addCategory = async (req, res) => {
 
 module.exports.categoryProduct = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const perPage = 8;
+  
   const q = req.params.id.replace(/-/g, " ");
   try {
     const categories = await categoryModel.find();
@@ -84,12 +86,12 @@ module.exports.categoryProduct = async (req, res) => {
     if (matchedProducts.length < 1) {
       req.flash("error", "Không tìm thấy sản phẩm");
       req.flash("category", q.replace(/ /g, "-"));
-      res.render("products/category",pagination(page, perPage, matchedProducts, categories));
+      res.render("products/category",pagination(page, 8, matchedProducts, categories));
     } else {
       req.flash("category", q.replace(/ /g, "-"));
       res.render(
         "products/category",
-        pagination(page, perPage, matchedProducts, categories)
+        pagination(page, 8, matchedProducts, categories)
       );
     }
   } catch (e) {
@@ -99,7 +101,7 @@ module.exports.categoryProduct = async (req, res) => {
 
 module.exports.categoryProductSearch = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const perPage = 8;
+  
   const category = req.params.id.replace(/-/g, " ");
   const q = req.query.q;
   try {
@@ -127,14 +129,14 @@ module.exports.categoryProductSearch = async (req, res) => {
       req.flash("error", `Không tìm thấy sản phẩm: ${q}`);
       res.render(
         "products/category",
-        pagination(page, perPage, matchedProductsSearch, categories)
+        pagination(page, 8, matchedProductsSearch, categories)
       );
     } else {
       req.flash("category", category.replace(/ /g, "-"));
       req.flash("q", q);
       res.render(
         "products/category",
-        pagination(page, perPage, matchedProductsSearch, categories)
+        pagination(page, 8, matchedProductsSearch, categories)
       );
     }
   } catch (e) {
@@ -145,19 +147,27 @@ module.exports.categoryProductSearch = async (req, res) => {
 // axios lấy sản phẩm
 module.exports.listJson = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const perPage = 4;
   try {
     let totalProducts = await productModel.find();
-    res.json(pagination(page, perPage, totalProducts));
+    res.json(pagination(page, 4, totalProducts));
   } catch (e) {
     res.status(500).send('lỗi server');
   }
 };
 
 module.exports.singleProduct = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
   try {
     const product = await productModel.findById(req.params.id);
-    res.render("products/singleproduct", { product: product });
+    const totalComments = await commentModel.find().populate('customerId');
+    const commentsProduct = totalComments.filter((comment)=>{
+      return comment.productId.toString().indexOf(req.params.id) !== -1;
+    });
+    if(commentsProduct.length < 1){
+      req.flash("error",'Sản phẩm chưa có nhận xét')
+     return res.render("products/singleproduct", pagination(page, 0, commentsProduct, product));
+    }
+    return res.render("products/singleproduct", pagination(page, 8, commentsProduct, product, moment));
   } catch (e) {
     res.status(500).send('lỗi server');
   }
@@ -171,7 +181,6 @@ module.exports.adminSearch = async (req, res) => {
       return removeAscent(product.title).toLowerCase().indexOf(removeAscent(q).toLowerCase()) !== -1; // neu q nam trong title thi gia tri lon hon -1
     });
     let page = parseInt(req.query.page) || 1;
-    let perPage = 6; // item in page
     if (matchedProducts.length < 1) {
       req.flash("error", `Không tìm thấy sản phẩm: ${q}`);
       req.flash("q", q);
@@ -180,7 +189,7 @@ module.exports.adminSearch = async (req, res) => {
       req.flash("q", q);
       res.render(
         "admin/admin_product",
-        pagination(page, perPage, matchedProducts)
+        pagination(page, 6, matchedProducts)
       );
     }
   } catch (e) {
@@ -192,9 +201,8 @@ module.exports.adminProduct = async (req, res) => {
   try {
     // panigation
     let page = parseInt(req.query.page) || 1;
-    let perPage = 8; // item in page
     let totalProducts = await productModel.find();
-    res.render("admin/admin_product", pagination(page, perPage, totalProducts));
+    res.render("admin/products/admin_product", pagination(page, 8, totalProducts));
   } catch (e) {
     res.status(500).send('lỗi server');
   }
@@ -203,7 +211,7 @@ module.exports.adminProduct = async (req, res) => {
 module.exports.pageAddProduct = async (req, res) => {
   try {
     const categories = await categoryModel.find();
-    res.render("admin/add_product", { categories: categories });
+    res.render("admin/products/add_product", { categories: categories });
   } catch (e) {}
 };
 
@@ -237,7 +245,7 @@ module.exports.showProduct = async (req, res) => {
     const product = await productModel
       .findById(req.params.id)
       .populate("category");
-    res.render("admin/view_product", { product: product });
+    res.render("admin/products/view_product", { product: product });
   } catch (e) {
     res.status(500).send('lỗi server');
   }
@@ -247,7 +255,7 @@ module.exports.pageEditProduct = async (req, res) => {
   try {
     const product = await productModel.findById(req.params.id);
     const categories = await categoryModel.find();
-    res.render("admin/edit_product", {
+    res.render("admin/products/edit_product", {
       product: product,
       categories: categories,
     });

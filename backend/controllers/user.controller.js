@@ -25,7 +25,7 @@ module.exports.adminUser = async (req, res) => {
     let page = parseInt(req.query.page) || 1;
     let perPage = 8;
     const users = await userModel.find({ isAdmin: "false" });
-    res.render("admin/admin_user", pagination(page, perPage, users));
+    res.render("admin/users/admin_user", pagination(page, perPage, users));
   } catch (e) {
     res.status(500).send('lỗi server');
   }
@@ -275,10 +275,10 @@ module.exports.searchUser = async (req, res) => {
     if (matchedUsers.length < 1) {
       req.flash("error", `Không tìm thấy khách hàng: "${q}"`);
       req.flash("q", q);
-      res.render("admin/search_users");
+      res.render("admin/users/search_users");
     } else {
       req.flash("q", q);
-      res.render("admin/admin_user", pagination(page, perPage, matchedUsers));
+      res.render("admin/users/admin_user", pagination(page, perPage, matchedUsers));
     }
   }catch (e) {
     res.status(500).send('lỗi server');

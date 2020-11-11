@@ -44,7 +44,7 @@
                             </td>
                             <td><%= order.phone %></td>
                             <td><%= order.address %></td>
-                            <td><%= x(order.createdAt).format('Do MMMM YYYY') %></td>
+                            <td><%= moment(order.createdAt).format('Do MMMM YYYY') %></td>
                             <td>
                               <form action="/admin/orders/status" method="post">
                               <input type="hidden" name="orderId" value="<%= order._id %>">

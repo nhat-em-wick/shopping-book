@@ -14,7 +14,7 @@
       <div class="drop-down">
         <span>Danh mục</span>
         <ul>
-          <% x.forEach(category=>{ %>
+          <% item.forEach(category=>{ %>
           <li><a href="/category/<%= category.link %>"><%= category.name %></a></li>
             <% }) %>
         </ul>

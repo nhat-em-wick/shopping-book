@@ -17,10 +17,10 @@ module.exports.adminSearch = async (req, res) => {
     if (matchedOrders.length < 1) {
       req.flash("error", `Không tìm thấy đơn hàng với SĐT: "${q}"`);
       req.flash("q", q);
-      res.render("admin/search_orders");
+      res.render("admin/orders/search_orders");
     } else {
       req.flash("q", q);
-      res.render("admin/admin_order", pagination(page, perPage, matchedOrders,moment));
+      res.render("admin/orders/admin_order", pagination(page, perPage, matchedOrders,0,moment));
     }
   }catch (e) {
     res.status(500).send('lỗi server');
@@ -91,7 +91,7 @@ module.exports.adminOrder = async (req, res) => {
     let page = parseInt(req.query.page) || 1;
     let perPage = 8; // item in page
     const orders = await orderModel.find().populate("customerId", "-password");
-    res.render("admin/admin_order", pagination(page, perPage, orders, moment));
+    res.render("admin/orders/admin_order", pagination(page, perPage, orders,0, moment));
   } catch (e) {
     res.status(500).send('lỗi server');
   }

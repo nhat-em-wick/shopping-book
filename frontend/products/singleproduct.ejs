@@ -1,19 +1,37 @@
+<div class="small-container single-product">
+  <div class="row">
+    <div class="col-2">
+      <img src="<%= item.image %>">
+    </div>
+    <div class="col-2">
+      <h2><%= item.title %> </h3>
+        <h4><%= item.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %> </h4>
+        <% if(item.status == 'het'){ %>
+        <span>( Tạm hết hàng )</span>
+        <% }else{ %>
+        <a data-product="<%= JSON.stringify(item)%>" class="btn-1 btn add-to-cart">Thêm sản phẩm</a>
+        <% } %>
+        <h3>Mô tả sản phẩm</h3><br>
+        <p><%= item.description %></p>
+    </div>
+  </div>
+</div>
 
-      <div class="small-container single-product">
-          <div class="row">
-            <div class="col-2">
-                <img src="<%= product.image %>">
-            </div>
-            <div class="col-2">
-                <h2><%= product.title %> </h3>
-                <h4><%= product.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %> </h4>
-                <% if(product.status == 'het'){ %>
-                    <span>( Tạm hết hàng )</span>
-                <% }else{ %>  
-                <a data-product="<%= JSON.stringify(product)%>" class="btn-1 btn add-to-cart">Thêm sản phẩm</a>
-                <% } %> 
-                <h3>Mô tả sản phẩm</h3><br>
-                <p><%= product.description %></p>
-            </div>
-          </div>
-      </div>
+
+<div class="small-container">
+  <h2>Nhận xét của khách hàng</h2>
+  <% if(messages.error){ %>
+    <span><%= messages.error  %></span>
+  <% }else{ %>  
+    <% records.forEach(comment=>{ %>
+  <div class="comment">
+    <b class="comment-customer"><%= comment.customerId.name %></b>
+    <div class="comment-date">(Nhận xét vào ngày <%= moment(comment.createdAt).format('Do MMMM YYYY') %>)</div>
+    <div class="comment-content">
+      <%= comment.content %> 
+    </div>
+   
+  </div>
+  <% }); %>
+  <% } %> 
+</div> 

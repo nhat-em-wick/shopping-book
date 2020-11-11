@@ -1,7 +1,7 @@
 <div class="categories">
     <div class="small-container">
       <div class="row row-2">
-        <% x.forEach(category=>{ %>
+        <% item.forEach(category=>{ %>
           <% if(messages.category == category.link){ %> 
             <h2><%= category.name %></h2>
           <% } %> 
@@ -15,7 +15,7 @@
         <div class="drop-down">
           <span>Danh mục</span>
             <ul>
-              <% x.forEach(category=>{ %>
+              <% item.forEach(category=>{ %>
                 <li><a href="/category/<%= category.link %>"><%= category.name %></a></li>
               <% }) %>
               </ul>

@@ -20,7 +20,7 @@ module.exports.saveComment = async (req, res) => {
             productId: req.params.id
         })
         const saveComment = comment.save();
-        res.redirect(`/product/view/${req.params.id}`)
+        res.redirect(`/products/view/${req.params.id}`)
     }catch(e){
         res.status(500).send('lỗi server')
     }

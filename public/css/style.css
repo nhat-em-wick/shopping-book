@@ -457,41 +457,41 @@ select:focus {
   background: var(--dark-color-light);
 }
 .drop-down ul {
-    position: absolute;
-    z-index: 1;
-    opacity: 0;
-    width: 120px;
-    transform: translateY(10px);
-    transition: .3s;
-    background-color: var(--dark-color-lighten);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    border-radius: 5px;
-  }
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  width: 120px;
+  transform: translateY(10px);
+  transition: 0.3s;
+  background-color: var(--dark-color-lighten);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5px;
+}
 
-  .drop-down span {
-    cursor: pointer;
-    padding: 5px 4px;
-    background-color: var(--dark-color-lighten);
-    border-radius: 5px;
-  }
+.drop-down span {
+  cursor: pointer;
+  padding: 5px 4px;
+  background-color: var(--dark-color-lighten);
+  border-radius: 5px;
+}
 
-  .drop-down li a {
-    display: flex;
-    padding: 13px 10px;
-    font-size: 13px;
-  }
+.drop-down li a {
+  display: flex;
+  padding: 13px 10px;
+  font-size: 13px;
+}
 
-  .drop-down li a:hover {
-    background-color: rgb(236, 236, 236);
-  }
+.drop-down li a:hover {
+  background-color: rgb(236, 236, 236);
+}
 
-  .drop-down:hover>ul {
-    opacity: 1;
-    transform: translateY(0px);
-  }
+.drop-down:hover > ul {
+  opacity: 1;
+  transform: translateY(0px);
+}
 
 .new-box {
   position: relative;
@@ -522,6 +522,7 @@ select:focus {
 /* single product */
 .single-product {
   margin-top: 80px;
+  margin-bottom: 80px;
 }
 .single-product .col-2 img {
   padding: 0;
@@ -537,7 +538,7 @@ select:focus {
   font-size: 22px;
   font-weight: bold;
 }
-.btn{
+.btn {
   cursor: pointer;
 }
 /* cart item */
@@ -798,7 +799,7 @@ form a {
 .admin-content .content {
   margin-left: 20px;
 }
-.row-3{
+.row-3 {
   justify-content: space-between;
 }
 .btn-edit {
@@ -816,7 +817,7 @@ form a {
   width: 150px;
   height: 200px;
 }
-.view-product{
+.view-product {
   display: flex;
   flex-direction: column;
 }
@@ -826,6 +827,7 @@ form a {
 #err {
   color: #dc3545;
 }
+
 @media screen and (max-width: 600px) {
   .row,
   .row-2 {
@@ -836,7 +838,7 @@ form a {
   .col-4 {
     width: 100%;
   }
-  .form-container{
+  .form-container {
     font-size: 20px;
   }
   .single-product .row {
@@ -853,26 +855,72 @@ form a {
     display: none;
   }
 }
-.to-top{
+/* to top */
+.to-top {
   position: fixed;
   bottom: 0px;
   right: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
   font-size: 32px;
   opacity: 0;
-  transition: all .4s;
+  transition: all 0.4s;
   cursor: pointer;
   pointer-events: none;
-  
 }
-.to-top i{
+.to-top i {
   font-size: 40px;
 }
-.to-top.active{
+.to-top.active {
   opacity: 1;
   pointer-events: auto;
-  
+}
+
+/* write comment */
+.write-comment textarea {
+  width: 100%;
+  height: 117px;
+  padding: 7px 8px;
+  border: 1px solid #dfdfdf;
+  resize: none;
+}
+.write-comment .btn-add-comment {
+  font-weight: 500;
+  font-size: 15px;
+  height: 40px;
+  background: #fdd22f;
+  border: 0;
+  color: #333;
+  width: 229px;
+  margin-top: 30px;
+  float: right;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.write-comment .btn-add-comment:hover {
+  opacity: 0.8;
+}
+
+/* read comment */
+.comment {
+  width: 700px;
+  padding: 32px 0px 0px;
+  border-bottom: 1px solid var(--dark-color-light);
+}
+.comment::after {
+  content: "";
+  display: block;
+  border-bottom: 1px solid rgb(242, 242, 242);
+  margin: 32px 0px 0px;
+}
+.comment .comment-date {
+  color: rgb(153, 153, 153);
+  font-size: 14px;
+}
+.comment .comment-content {
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0px 0px 8px;
 }

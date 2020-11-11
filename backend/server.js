@@ -30,6 +30,7 @@ const routeUser = require("./routes/user.route");
 const productRoute = require("./routes/product.route");
 const routeCart = require("./routes/cart.route");
 const routeOrder = require("./routes/order.route");
+const routeComment = require("./routes/comment.route");
 const limitRequest = require('./middleware/rateLimitRequest');
 const sessionLocals = require('./middleware/sessionLocals');
 const setHeader = require('./middleware/setHeader');
@@ -77,6 +78,8 @@ app.use('/', routeUser);
 app.use('/', productRoute);
 app.use('/', routeCart);
 app.use('/', routeOrder);
+app.use('/', routeComment);
+
 
 const port = process.env.PORT;
 
