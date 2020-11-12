@@ -414,7 +414,7 @@ select:focus {
 .page-btn a {
   color: black;
   float: left;
-  padding: 8px 16px;
+  padding: 5px 13px;
   text-decoration: none;
   transition: background-color 0.3s;
   border: 1px solid #ddd;
@@ -688,9 +688,7 @@ form a {
 .order td {
   line-height: 20px;
 }
-.order td a {
-  color: rgb(0, 127, 240);
-}
+
 .btn-cancel {
   background-color: rgb(255, 57, 69);
   border-radius: 5px;
@@ -808,8 +806,8 @@ form a {
   border-radius: 5px;
   color: #fff;
 }
-.content td a {
-  color: #fff;
+.btn-link{
+  color: rgb(0, 127, 240);
 }
 /* view product */
 .form-container .view-product img {

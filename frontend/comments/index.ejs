@@ -7,7 +7,7 @@
         <form action="/comment/<%= product._id %>" method="post">
             
             <label for="write-comment">Viết nhận xét của bạn bên dưới:</label>
-            <textarea name="content" id="write-comment" placeholder="Nhận xét của bạn về sản phẩm này"></textarea>
+            <textarea name="content" id="write-comment" placeholder="Nhận xét của bạn về sản phẩm này"><%= messages.content %></textarea>
             <% if(messages.error){ %> 
             <small id="err"><%= messages.error %></small>
             <% } %> 

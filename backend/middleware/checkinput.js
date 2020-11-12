@@ -5,6 +5,7 @@ const regAddress = /^(?=.*[A-z])(?=.*[0-9])?([A-z0-9\ \.\,\-]){8,}$/g;
 const regPhone = /^0[1-9]{9}$/;
 const regSearch = /^[A-z0-9\ \@\.\-]*[^\!\#\$\^\<\>\{\}\&\,\;\ ]$/;
 const regPrice = /^[0-9]*$/;
+const regComment=/^[^\ \,\.\<\>\$\%\&\{\}\^][A-z0-9\ \,\.\"\']{50,}[^\ \<\>\$\%\&\{\}\^\'\"]$/;
 const removeAscent = require('./removeAscent')
 module.exports.checkLogin = (req, res, next) => {
   const { email, password } = req.body;
@@ -39,18 +40,15 @@ module.exports.checkRegister = (req, res, next) => {
     req.flash('email', email)
     return res.redirect('back');
   }
-  if (regName.test(name)) {
+  if (regName.test(removeAscent(name))) {
     if (regEmail.test(email)) {
-      if (regPass.test(password) && regPass.test(conf_password)) {
-        return next();
-      } else {
+      if (regPass.test(password) && regPass.test(conf_password)) return next();
         req.flash('error', 'Mật khẩu phải chứa 1 ký tự chữ, 1 ký tự số và chứa ít nhất 8 ký tự');
         req.flash('name', name)
         req.flash('email', email)
         req.flash('password', password)
         req.flash('conf_password', conf_password)
         return res.redirect('/register');
-      }
     } else {
       req.flash('error', 'Email không hợp lệ');
       req.flash('name', name)
@@ -68,14 +66,14 @@ module.exports.checkRegister = (req, res, next) => {
     return res.redirect('back');
   }
 };
+
 module.exports.search = (req, res, next) => {
   let q = req.query.q;
   if(q=='') return res.redirect('back');
-  if (regSearch.test(removeAscent(q))){
-    return next();
-    } 
+  if (regSearch.test(removeAscent(q))) return next();
   return res.status(403).send('Từ khóa không hợp lệ');
 };
+
 module.exports.checkChangeInfo = (req, res, next) => {
   const { name, password, conf_password } = req.body;
   if (password !== conf_password) {
@@ -83,7 +81,7 @@ module.exports.checkChangeInfo = (req, res, next) => {
     req.flash('name', name)
     return res.redirect('back');
   }
-  if (regName.test(name)) {
+  if (regName.test(removeAscent(name))) {
     if (regPass.test(password) && regPass.test(conf_password))  return next();
       req.flash('error',"Mật khẩu phải chứa 1 ký tự chữ, 1 ký tự số và chứa ít nhất 8 ký tự")
       req.flash('name', name)
@@ -99,9 +97,10 @@ module.exports.checkChangeInfo = (req, res, next) => {
 module.exports.checkNewPass = (req, res, next)=>{
   const {newpass} = req.body;
   const id = req.params.id;
-  if(!newpass)
+  if(!newpass){
     req.flash('error', 'Không được để trống');
     return res.redirect(`/resetpassword/${id}`);
+  }
   if(regPass.test(newpass)) return next();
   req.flash('error',"Mật khẩu phải chứa 1 ký tự chữ, 1 ký tự số và chứa ít nhất 8 ký tự")
   return res.redirect(`/resetpassword/${id}`);
@@ -116,14 +115,11 @@ module.exports.checkOrder = (req, res, next) => {
     return res.redirect('/checkout')
   }
   if (regPhone.test(phone)) {
-    if (regAddress.test(address)) {
-      return next();
-    } else {
+    if (regAddress.test(removeAscent(address))) return next();
       req.flash('error', 'Địa chỉ không hợp lệ')
       req.flash('phone',phone);
       req.flash('address', address)
       return res.redirect('/checkout');
-    }
   } else {
     req.flash('phone',phone);
     req.flash('address', address)
@@ -132,3 +128,15 @@ module.exports.checkOrder = (req, res, next) => {
   }
 };
 
+module.exports.checkComment = (req, res, next) => {
+  const {content} = req.body;
+  if(!content){
+    req.flash('error', 'Không được để trống');
+    return res.redirect('back');
+  }
+  q=removeAscent(content);
+  if(regComment.test(removeAscent(content))) return next();
+  req.flash('error',"Nội dung chứa ít nhất 50 kí tự và không chứa kí tự đặc biệt");
+  req.flash('content', content);
+  return res.redirect('back');
+}

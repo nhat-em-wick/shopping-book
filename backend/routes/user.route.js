@@ -36,6 +36,8 @@ router.post('/resetpassword/:id',checkInput.checkNewPass, userController.resetPa
 
 // router.post('/refreshtoken', userController.refreshToken);
 
+router.get('/admin', userController.pageLoginAdmin);
+
 router.get('/admin/users', verifyToken, checkAdmin, userController.adminUser);
 
 router.post(

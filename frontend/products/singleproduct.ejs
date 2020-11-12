@@ -26,12 +26,29 @@
     <% records.forEach(comment=>{ %>
   <div class="comment">
     <b class="comment-customer"><%= comment.customerId.name %></b>
-    <div class="comment-date">(Nhận xét vào ngày <%= moment(comment.createdAt).format('Do MMMM YYYY') %>)</div>
+    <div class="comment-date">(Nhận xét vào ngày <%= moment(comment.createdAt).format('MM/DD/YYYY') %>)</div>
     <div class="comment-content">
       <%= comment.content %> 
     </div>
    
   </div>
   <% }); %>
+  <div class="page-btn">
+    <% if(page>1){ %>
+    <a href="?page=<%= page-1 %>">&laquo;</a>
+    <% } %>
+    <% for(let i = 1; i <= totalPages; i++){ %>
+    <% if(i != page){ %>
+    <% if(i>page-3&&i<page+3){ %>
+    <a href="?page=<%= i %>"><%= i %></a>
+    <% } %>
+    <% }else{ %>
+    <a href=""><%= i %></a>
+    <% } %>
+    <% } %>
+    <% if(page<totalPages-2){ %>
+    <a href="?page=<%= page+1 %>">&raquo;</a>
+    <% } %>
+  </div>
   <% } %> 
 </div> 

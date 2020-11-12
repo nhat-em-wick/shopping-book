@@ -24,7 +24,7 @@
                         <tr>
                             <th>Mã đơn hàng</th>
                             <th>Tên khách hàng</th>
-                            <th>Sản phẩm</th>
+                            
                             <th>SĐT</th>
                             <th>Địa chỉ</th>
                             <th>
@@ -35,19 +35,14 @@
                         <% records.forEach(order => { %>
                         <tr class="item">
                             <td>
-                              <%= order._id%>
+                              <a href="/orders/view/<%= order._id%>" class="btn-link"><%= order._id%></a>
                             </td>
                             <td>
                               <%= order.customerId.name %>
                             </td>
-                            <td>
-                              <% for (let product of Object.values(order.items)) { %>
-                                <%= product.item.title %><br>
-                                <% } %>
-                            </td>
                             <td><%= order.phone %></td>
                             <td><%= order.address %></td>
-                            <td><%= x(order.createdAt).format('Do MMMM YYYY') %></td>
+                            <td><%= x(order.createdAt).format('MM/DD/YYYY') %></td>
                             <td>
                               <form action="/admin/orders/status" method="post">
                               <input type="hidden" name="orderId" value="<%= order._id %>">

@@ -8,19 +8,19 @@ const pagination = require("./pagination");
 module.exports.adminSearch = async (req, res) => {
   let q = req.query.q;
   try{
-    const orders = await orderModel.find();
+    const orders = await orderModel.find().populate('customerId');
     let matchedOrders = orders.filter((order) => {
       return order.phone.indexOf(q) !== -1; // neu q nam trong title thi gia tri lon hon -1
     });
     let page = parseInt(req.query.page) || 1;
-    let perPage = 8; // item in page
+    
     if (matchedOrders.length < 1) {
       req.flash("error", `Không tìm thấy đơn hàng với SĐT: "${q}"`);
       req.flash("q", q);
       res.render("admin/orders/search_orders");
     } else {
       req.flash("q", q);
-      res.render("admin/orders/admin_order", pagination(page, perPage, matchedOrders,0,moment));
+      res.render("admin/orders/admin_order", pagination(page, 8, matchedOrders,0,moment));
     }
   }catch (e) {
     res.status(500).send('lỗi server');

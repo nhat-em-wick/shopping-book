@@ -20,6 +20,10 @@ module.exports.pageRegister = (req, res) => {
   res.render("user/register");
 };
 
+module.exports.pageLoginAdmin = (req, res) => {
+  res.render("admin/users/login");
+};
+
 module.exports.adminUser = async (req, res) => {
   try {
     let page = parseInt(req.query.page) || 1;
