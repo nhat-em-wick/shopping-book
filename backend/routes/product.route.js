@@ -7,16 +7,23 @@ const checkInput = require("../middleware/checkinput");
 const upload = require("../middleware/uploadProduct");
 const cloudinary = require("../middleware/clouldinary");
 const fs = require('fs');
-const { route } = require("./user.route");
+
+router.get("/products", productController.listProduct);
+
 router.get(
   "/products/search",
   checkInput.search,
   productController.searchProduct
 );
-router.get("/products", productController.listProduct);
+
 router.get("/listjson", productController.listJson);
 
 router.get('/products/view/:id', productController.singleProduct)
+
+router.get('/category/:id',checkInput.search, productController.categoryProduct)
+
+router.get('/category/search/:id', checkInput.search, productController.categoryProductSearch)
+
 //admin
 router.get(
   "/admin/products",
@@ -29,7 +36,7 @@ router.get(
   verifyToken,
   checkAdmin,
   checkInput.search,
-  productController.adminSearch
+  productController.adminSearchProduct
 );
 router.get(
   "/admin/products/add",
@@ -73,8 +80,7 @@ router.delete(
   productController.deleteProduct
 );
 
-router.get('/category/:id',checkInput.search, productController.categoryProduct)
-router.get('/category/search/:id', checkInput.search, productController.categoryProductSearch)
+
 router.post('/admin/products/status', verifyToken, checkAdmin, productController.updateStatus)
 router.get('/admin/addcategory', verifyToken, checkAdmin, productController.pageAddCategory)
 router.post('/admin/addcategory', verifyToken, checkAdmin, productController.addCategory)

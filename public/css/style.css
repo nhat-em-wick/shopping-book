@@ -407,11 +407,11 @@ select {
 select:focus {
   outline: none;
 }
-.page-btn {
+.pagination {
   margin: 0 auto;
   display: inline-block;
 }
-.page-btn a {
+.pagination a {
   color: black;
   float: left;
   padding: 5px 13px;
@@ -420,7 +420,7 @@ select:focus {
   border: 1px solid #ddd;
 }
 
-.page-btn a:hover {
+.pagination a:hover {
   background: var(--dark-color);
   color: var(--white-color);
 }

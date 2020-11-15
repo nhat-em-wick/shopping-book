@@ -1,4 +1,4 @@
 module.exports = function (req, res, next) {
-    res.setHeader("X-Powered-By",'ahihi');
+  res.removeHeader("X-Powered-By");
     next();
   }

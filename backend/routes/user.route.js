@@ -5,9 +5,11 @@ const router = express.Router();
 const checkAdmin = require("../middleware/checkAdmin");
 const checkInput = require("../middleware/checkinput");
 const limitRequest = require("../middleware/rateLimitRequest");
-const redirectHome = require("../middleware/redirectHome");
-router.get('/login',redirectHome, userController.pageLogin);
-router.get('/register',redirectHome, userController.pageRegister);
+const checkSessionUser = require("../middleware/checkSessionUser");
+
+
+router.get('/login',checkSessionUser, userController.pageLogin);
+router.get('/register',checkSessionUser, userController.pageRegister);
 
 
 router.post(
@@ -34,9 +36,6 @@ router.post('/forgotpassword', userController.forgotPassword);
 router.get('/resetpassword/:id', userController.pageResetPassword);
 router.post('/resetpassword/:id',checkInput.checkNewPass, userController.resetPassword);
 
-// router.post('/refreshtoken', userController.refreshToken);
-
-router.get('/admin', userController.pageLoginAdmin);
 
 router.get('/admin/users', verifyToken, checkAdmin, userController.adminUser);
 

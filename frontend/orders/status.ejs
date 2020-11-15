@@ -3,7 +3,7 @@
     <h2>Trạng thái đơn hàng</h2>
     <div class="status-text">
       <span>Mã đơn hàng: <b><%= order._id %></b></span>
-      <a href="/orders/view/<%= order._id %>">Xem chi tiết đơn hàng</a>
+      <a href="/orders/view/<%= order._id %>" class="btn-link">Xem chi tiết đơn hàng</a>
       <input id="hiddenInput" type="hidden" value="<%= JSON.stringify(order) %>">
     </div>
     <div class="process-bar">

@@ -8,6 +8,23 @@ const cloudinary = require("../middleware/clouldinary");
 const removeAscent = require("../middleware/removeAscent");
 const categoryModel = require("../models/category.model");
 const commentModel = require("../models/comment.model")
+
+module.exports.listProduct = async (req, res) => {
+  try {
+    // panigation
+    const page = parseInt(req.query.page) || 1;
+   
+    const categories = await categoryModel.find();
+    const totalProducts = await productModel.find();
+    res.render(
+      "products/index",
+      pagination(page, 12, totalProducts, categories)
+    );
+  } catch (e) {
+    res.status(500).send('lỗi server');
+  }
+};
+
 module.exports.searchProduct = async (req, res) => {
   let q = req.query.q;
   try {
@@ -28,41 +45,6 @@ module.exports.searchProduct = async (req, res) => {
       req.flash("q", q);
       res.render("products/search", pagination(page, 8, matchedProducts));
     }
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-};
-
-// get list product
-module.exports.listProduct = async (req, res) => {
-  try {
-    // panigation
-    const page = parseInt(req.query.page) || 1;
-   
-    const categories = await categoryModel.find();
-    const totalProducts = await productModel.find();
-    res.render(
-      "products/index",
-      pagination(page, 12, totalProducts, categories)
-    );
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-};
-module.exports.pageAddCategory = (req, res) => {
-  res.render("admin/add_category");
-};
-
-module.exports.addCategory = async (req, res) => {
-  try {
-    const { name, link } = req.body;
-    const newCategory = new categoryModel({
-      name: name,
-      link: link,
-    });
-    const saveCategory = newCategory.save();
-    req.flash("success", "Thêm thành công");
-    res.redirect("back");
   } catch (e) {
     res.status(500).send('lỗi server');
   }
@@ -144,17 +126,6 @@ module.exports.categoryProductSearch = async (req, res) => {
   }
 };
 
-// axios lấy sản phẩm
-module.exports.listJson = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  try {
-    let totalProducts = await productModel.find();
-    res.json(pagination(page, 4, totalProducts));
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-};
-
 module.exports.singleProduct = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   try {
@@ -173,7 +144,49 @@ module.exports.singleProduct = async (req, res) => {
   }
 };
 
-module.exports.adminSearch = async (req, res) => {
+module.exports.listJson = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  try {
+    let totalProducts = await productModel.find();
+    res.json(pagination(page, 4, totalProducts));
+  } catch (e) {
+    res.status(500).send('lỗi server');
+  }
+};
+
+// ADMIN
+
+module.exports.pageAddCategory = (req, res) => {
+  res.render("admin/add_category");
+};
+
+module.exports.addCategory = async (req, res) => {
+  try {
+    const { name, link } = req.body;
+    const newCategory = new categoryModel({
+      name: name,
+      link: link,
+    });
+    const saveCategory = newCategory.save();
+    req.flash("success", "Thêm thành công");
+    res.redirect("back");
+  } catch (e) {
+    res.status(500).send('lỗi server');
+  }
+};
+
+module.exports.adminProduct = async (req, res) => {
+  try {
+    // panigation
+    let page = parseInt(req.query.page) || 1;
+    let totalProducts = await productModel.find();
+    res.render("admin/products/admin_product", pagination(page, 8, totalProducts));
+  } catch (e) {
+    res.status(500).send('lỗi server');
+  }
+};
+
+module.exports.adminSearchProduct = async (req, res) => {
   let q = req.query.q;
   try {
     let totalProducts = await productModel.find();
@@ -197,17 +210,6 @@ module.exports.adminSearch = async (req, res) => {
   }
 };
 
-module.exports.adminProduct = async (req, res) => {
-  try {
-    // panigation
-    let page = parseInt(req.query.page) || 1;
-    let totalProducts = await productModel.find();
-    res.render("admin/products/admin_product", pagination(page, 8, totalProducts));
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-};
-
 module.exports.pageAddProduct = async (req, res) => {
   try {
     const categories = await categoryModel.find();
@@ -215,7 +217,6 @@ module.exports.pageAddProduct = async (req, res) => {
   } catch (e) {}
 };
 
-// add product
 module.exports.addProduct = async (req, res) => {
   const { title, totalQty, price, description, category } = req.body;
   try {

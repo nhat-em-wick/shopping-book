@@ -12,10 +12,12 @@ const methodOverride = require('method-override')
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
 const flash = require('express-flash')
+
 const urlDB =  process.env.DB_CONNECTION
 mongoose.connect(urlDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 const connection = mongoose.connection;
 connection
@@ -33,7 +35,7 @@ const routeOrder = require("./routes/order.route");
 const routeComment = require("./routes/comment.route");
 const limitRequest = require('./middleware/rateLimitRequest');
 const sessionLocals = require('./middleware/sessionLocals');
-const setHeader = require('./middleware/setHeader');
+const removeHeader = require('./middleware/removeHeader');
 const app = express();
 
 
@@ -54,6 +56,7 @@ let mongoStore = new MongoDbStore({
   collection: "sessions",
 });
 
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -64,13 +67,22 @@ app.use(
   })
 );
 app.use(sessionLocals);
-app.use(setHeader);
+
+//session timeout
+app.use((req, res, next)=>{
+  const hour = 1000 * 60 * 60;
+  req.session.cookie.expires = new Date(Date.now() + hour)
+  req.session.cookie.maxAge = hour;
+  next();
+})
+
+app.use(removeHeader);
 
 app.use(limitRequest.limiterServer);
+
 app.use(flash())
 
 app.get('/', (req, res) => {
-
   res.render('index');
 });
 

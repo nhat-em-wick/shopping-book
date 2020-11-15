@@ -1,16 +1,17 @@
 require("dotenv/config");
 const userModel = require("../models/user.model");
+const tokenModel = require("../models/token.model")
 const path = require("path");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const mailgun = require("mailgun-js");
 const pagination = require("./pagination");
 
+// api mailgun
 const mg = mailgun({
   apiKey: process.env.MAILGUN_APIKEY,
   domain: process.env.DOMAIN,
 });
-const tokenList = {};
 
 module.exports.pageLogin = (req, res) => {
   res.render("user/login");
@@ -20,31 +21,61 @@ module.exports.pageRegister = (req, res) => {
   res.render("user/register");
 };
 
-module.exports.pageLoginAdmin = (req, res) => {
-  res.render("admin/users/login");
-};
-
-module.exports.adminUser = async (req, res) => {
-  try {
-    let page = parseInt(req.query.page) || 1;
-    let perPage = 8;
-    const users = await userModel.find({ isAdmin: "false" });
-    res.render("admin/users/admin_user", pagination(page, perPage, users));
-  } catch (e) {
-    res.status(500).send('lỗi server');
+module.exports.login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await userModel.findOne({ email: req.body.email });
+  if (!user) {
+    req.flash("error", "Email không tồn tại");
+    req.flash("email", email);
+    return res.redirect("/login");
+  }
+  const Pass = await bcrypt.compare(req.body.password, user.password);
+  if (!Pass) {
+    req.flash("email", email);
+    req.flash("error", "Mật khẩu sai");
+    return res.redirect("/login");
+  } else {
+    try {
+      // create and assign a token
+      const access_token = await jwt.sign(
+        { _id: user._id },
+        process.env.TOKEN_SECRET,
+        {
+          expiresIn: "30m",
+        }
+      );
+      const refreshToken = await jwt.sign(
+        { _id: user._id },
+        process.env.REFRESH_TOKEN,
+        {
+          expiresIn: "3d",
+        }
+      );
+      const token = new tokenModel({
+        access_token: access_token,
+        refresh_token: refreshToken,
+      });
+      const saveToken = await token.save();
+      
+      res.cookie(
+        "token",
+        { access_token: access_token, refresh_token: refreshToken },
+        {
+          expires: new Date(Date.now() + 8 * 3600000),
+        }
+      );
+      req.session.user = {
+        name: user.name,
+        isAdmin: user.isAdmin,
+        id: user._id,
+      };
+      if(user.isAdmin =='true') return res.redirect('/admin/users');
+      res.redirect('/');
+    } catch (e) {
+     res.status(500).send('lỗi server')
+    }
   }
 };
-
-module.exports.myInfo = async (req, res) => {
-  try {
-    const user = await userModel.findById(req.user._id);
-    return res.render("user/info", { user: user });
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-};
-
-
 
 module.exports.register = async (req, res) => {
   const { name, email, password, conf_password } = req.body;
@@ -77,63 +108,15 @@ module.exports.register = async (req, res) => {
   }
 };
 
-module.exports.login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userModel.findOne({ email: req.body.email });
-  if (!user) {
-    req.flash("error", "Email không tồn tại");
-    req.flash("email", email);
-    return res.redirect("/login");
-  }
-  const Pass = await bcrypt.compare(req.body.password, user.password);
-  if (!Pass) {
-    req.flash("email", email);
-    req.flash("error", "Mật khẩu sai");
-    return res.redirect("/login");
-  } else {
-    try {
-      // create and assign a token
-      const token = await jwt.sign(
-        { _id: user._id },
-        process.env.TOKEN_SECRET,
-        {
-          expiresIn: "45m",
-        }
-      );
-      const refreshToken = await jwt.sign(
-        { _id: user._id },
-        process.env.REFRESH_TOKEN,
-        {
-          expiresIn: "3d",
-        }
-      );
-      const response = {
-        access_token: token,
-        refresh_token: refreshToken,
-      };
-      console.log(response)
-      tokenList[refreshToken] = response;
-      res.cookie(
-        "token",
-        { access_token: token, refresh_token: refreshToken },
-        {
-          expires: new Date(Date.now() + 8 * 3600000),
-        }
-      );
-      req.session.user = {
-        name: user.name,
-        isAdmin: user.isAdmin,
-        id: user._id,
-      };
-      if(user.isAdmin =='true') return res.redirect('/admin/users');
-      res.redirect('/');
-    } catch (e) {
-     res.status(500).send('lỗi server')
-    }
+module.exports.myInfo = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.user._id);
+    return res.render("user/info", { user: user });
+  } catch (e) {
+    res.status(500).send('lỗi server');
   }
 };
 
-//update user
 module.exports.changeInfo = async (req, res) => {
   const { name, password, conf_password } = req.body;
     try {
@@ -150,16 +133,6 @@ module.exports.changeInfo = async (req, res) => {
     } catch (e) {
       res.status(500).send('lỗi server')
     }
-};
-
-module.exports.deleteUser = async (req, res) => {
-  try {
-    await userModel.findByIdAndDelete(req.params.id);
-    req.flash("success", "Xóa thành công")
-    res.redirect("/admin/users");
-  } catch (e) {
-    res.status(500).send('lỗi server')
-  }
 };
 
 module.exports.pageForgotPassword = (req, res) => {
@@ -233,39 +206,28 @@ module.exports.resetPassword = async (req, res) => {
       res.status(500).send('lỗi server')
     }
   } else {
-    req.flash("error", 'Token không hợp lệ');
-    res.redirect(`/resetpassword/${resetLink}`);
+    
+    res.redirect('back');
   }
 };
 
-module.exports.refreshToken = async (req, res) => {
-  const refreshToken = req.cookies.refresh_token;
-    try {
-      const decoded =await jwt.decode(refreshToken);
-      const token = await jwt.sign({ _id: decoded._id }, process.env.TOKEN_SECRET, {
-        expiresIn: "30m",
-      });
-      // update the token in the list
-      tokenList[refreshToken].access_token = token;
-      const response = {
-        access_token: token,
-        refresh_token: refreshToken
-      };
-      res.cookie(
-        "token",
-        { access_token: token, refresh_token: refreshToken },
-        {
-          expires: new Date(Date.now() + 8 * 3600000),
-        }
-      );
-      res.redirect("back");
-    } catch (e) {
-     res.status(403).send("Token không hợp lệ")
-    }
-  
+module.exports.logout = (req, res) => {
+  delete req.session.user;
+  res.clearCookie("token");
+  res.redirect("/login");
 };
 
 
+module.exports.adminUser = async (req, res) => {
+  try {
+    let page = parseInt(req.query.page) || 1;
+    let perPage = 8;
+    const users = await userModel.find({ isAdmin: "false" });
+    res.render("admin/users/admin_user", pagination(page, perPage, users));
+  } catch (e) {
+    res.status(500).send('lỗi server');
+  }
+};
 
 module.exports.searchUser = async (req, res) => {
   let q = req.query.q;
@@ -289,8 +251,45 @@ module.exports.searchUser = async (req, res) => {
   }
 };
 
-module.exports.logout = (req, res) => {
-  delete req.session.user;
-  res.clearCookie("token");
-  res.redirect("/login");
+module.exports.deleteUser = async (req, res) => {
+  try {
+    await userModel.findByIdAndDelete(req.params.id);
+    req.flash("success", "Xóa thành công")
+    res.redirect("/admin/users");
+  } catch (e) {
+    res.status(500).send('lỗi server')
+  }
 };
+
+
+// module.exports.refreshToken = async (req, res) => {
+//   const refreshToken = req.cookies.refresh_token;
+//     try {
+//       const decoded =await jwt.decode(refreshToken);
+//       const access_token = await jwt.sign({ _id: decoded._id }, process.env.TOKEN_SECRET, {
+//         expiresIn: "30m",
+//       });
+      
+//       await tokenModel.updateOne(
+//        {refreshToken: refreshToken},
+//        {access_token: access_token}
+//      );
+//       res.cookie(
+//         "token",
+//         { access_token: token, refresh_token: refreshToken },
+//         {
+//           expires: new Date(Date.now() + 8 * 3600000),
+//         }
+//       );
+      
+//     } catch (e) {
+//      res.status(403).send("Token không hợp lệ")
+//     }
+  
+// };
+
+
+
+
+
+

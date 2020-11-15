@@ -3,29 +3,10 @@ const productModel = require("../models/product.model");
 const jwt = require("jsonwebtoken");
 var mongoose = require("mongoose");
 const moment = require('moment')
-
 const pagination = require("./pagination");
-module.exports.adminSearch = async (req, res) => {
-  let q = req.query.q;
-  try{
-    const orders = await orderModel.find().populate('customerId');
-    let matchedOrders = orders.filter((order) => {
-      return order.phone.indexOf(q) !== -1; // neu q nam trong title thi gia tri lon hon -1
-    });
-    let page = parseInt(req.query.page) || 1;
-    
-    if (matchedOrders.length < 1) {
-      req.flash("error", `Không tìm thấy đơn hàng với SĐT: "${q}"`);
-      req.flash("q", q);
-      res.render("admin/orders/search_orders");
-    } else {
-      req.flash("q", q);
-      res.render("admin/orders/admin_order", pagination(page, 8, matchedOrders,0,moment));
-    }
-  }catch (e) {
-    res.status(500).send('lỗi server');
-  }
-  
+
+module.exports.checkOut = (req, res) => {
+  res.render("orders/checkout");
 };
 
 module.exports.order = async (req, res) => {
@@ -54,10 +35,6 @@ module.exports.order = async (req, res) => {
   }
 };
 
-module.exports.checkOut = (req, res) => {
-  res.render("orders/checkout");
-};
-
 module.exports.showOrderUser = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req.user._id);
@@ -77,26 +54,6 @@ module.exports.itemOrder = async (req, res) => {
   }
 };
 
-module.exports.statusOrder = async (req, res) => {
-  try {
-    const order = await orderModel.findById(req.params.id);
-    res.render("orders/status", { order: order});
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-};
-
-module.exports.adminOrder = async (req, res) => {
-  try {
-    let page = parseInt(req.query.page) || 1;
-    let perPage = 8; // item in page
-    const orders = await orderModel.find().populate("customerId", "-password");
-    res.render("admin/orders/admin_order", pagination(page, perPage, orders,0, moment));
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-};
-
 module.exports.cancelOrder = async (req, res) => {
   try {
     const order = await orderModel.findById(req.params.id);
@@ -111,6 +68,50 @@ module.exports.cancelOrder = async (req, res) => {
   } catch (e) {
     res.status(500).send('lỗi server');
   }
+};
+
+module.exports.statusOrder = async (req, res) => {
+  try {
+    const order = await orderModel.findById(req.params.id);
+    res.render("orders/status", { order: order});
+  } catch (e) {
+    res.status(500).send('lỗi server');
+  }
+};
+
+
+module.exports.adminOrder = async (req, res) => {
+  try {
+    let page = parseInt(req.query.page) || 1;
+    let perPage = 8; // item in page
+    const orders = await orderModel.find().populate("customerId", "-password");
+    res.render("admin/orders/admin_order", pagination(page, perPage, orders,0, moment));
+  } catch (e) {
+    res.status(500).send('lỗi server');
+  }
+};
+
+module.exports.adminSearchOrder = async (req, res) => {
+  let q = req.query.q;
+  try{
+    const orders = await orderModel.find().populate('customerId');
+    let matchedOrders = orders.filter((order) => {
+      return order.phone.indexOf(q) !== -1; // neu q nam trong title thi gia tri lon hon -1
+    });
+    let page = parseInt(req.query.page) || 1;
+    
+    if (matchedOrders.length < 1) {
+      req.flash("error", `Không tìm thấy đơn hàng với SĐT: "${q}"`);
+      req.flash("q", q);
+      res.render("admin/orders/search_orders");
+    } else {
+      req.flash("q", q);
+      res.render("admin/orders/admin_order", pagination(page, 8, matchedOrders,0,moment));
+    }
+  }catch (e) {
+    res.status(500).send('lỗi server');
+  }
+  
 };
 
 module.exports.updateStatus = async (req, res) => {
