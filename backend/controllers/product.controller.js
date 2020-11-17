@@ -144,14 +144,23 @@ module.exports.singleProduct = async (req, res) => {
   }
 };
 
-module.exports.listJson = async (req, res) => {
+module.exports.featuredProducts = async (req, res) => {
   try {
-    let totalProducts = await productModel.find({soldNo: {$gt: 5}});
-    res.json(pagination(1, 4, totalProducts));
+    let products = await productModel.find({soldNo: {$gt: 5}});
+    res.json(pagination(1, 4, products));
   } catch (e) {
     res.status(500).send('lỗi server');
   }
 };
+
+module.exports.latestProducts = async (req, res) => {
+  try {
+    let products = await productModel.find().sort({ 'createdAt': -1 });
+    res.json(pagination(1, 4, products));
+  } catch (e) {
+    res.status(500).send('lỗi server');
+  }
+}
 
 // ADMIN
 

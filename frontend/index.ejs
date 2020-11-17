@@ -6,14 +6,21 @@
 			<a href="/products" class="btn-1">Get Started</a>
 		</div>
 		<div class="col-2">
-			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1603504796/images/book3_nyk2bg.jpg">
+			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1603504743/book3_hvghcq.jpg">
 		</div>
 	</div>
 </div>
 <div class="categories">
 	<div class="small-container">
 		<h2 class="title">Sản Phẩm Nổi Bật</h2>
-		<div class="row" id="axios">
+		<div class="row" id="featured">
+		</div>
+	</div>
+</div>
+<div class="categories">
+	<div class="small-container">
+		<h2 class="title">Sản Phẩm Mới Nhất</h2>
+		<div class="row" id="latest">
 		</div>
 	</div>
 </div>
@@ -67,18 +74,30 @@
 </div>
 
 <script>
-	async function getProducts() {
-		const url = 'https://coder-nhat.herokuapp.com/listjson'
-		// const url = 'http://localhost:3000/listjson'
+	async function getFeaturedProducts() {
+		// const url = 'https://coder-nhat.herokuapp.com/featuredproduct'
+		 const url = 'http://localhost:3000/featuredproducts'
 		try {
 			const response = await axios.get(url);
-			renderProduct(response.data.records)
+			renderProduct(response.data.records,"featured")
 		} catch (error) {
 			console.error(error);
 		}
 	}
-	function renderProduct(products) {
-		const listHTML = document.getElementById('axios');
+
+	async function getLatestsProducts() {
+		// const url = 'https://coder-nhat.herokuapp.com/listjson'
+		const url = 'http://localhost:3000/latestproducts'
+		try {
+			const response = await axios.get(url);
+			renderProduct(response.data.records,"latest")
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	function renderProduct(products, id) {
+		const listHTML = document.getElementById(id);
 		try {
 			let content = products.map((item) => {
 				return `<div class="col-4">
@@ -95,5 +114,6 @@
 		} catch{
 		}
 	}
-	getProducts();
+	getFeaturedProducts();
+	getLatestsProducts();
 </script>

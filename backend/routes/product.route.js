@@ -16,7 +16,9 @@ router.get(
   productController.searchProduct
 );
 
-router.get("/listjson", productController.listJson);
+router.get("/featuredproducts", productController.featuredProducts);
+
+router.get('/latestproducts', productController.latestProducts)
 
 router.get('/products/view/:id', productController.singleProduct)
 
