@@ -15,6 +15,7 @@ router.get('/register',checkSessionUser, userController.pageRegister);
 router.post(
   '/login',
   limitRequest.limiterLogin,
+  limitRequest.speedLimiter,
   checkInput.checkLogin,
   userController.login
 );

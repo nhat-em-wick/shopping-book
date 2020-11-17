@@ -66,8 +66,6 @@ app.use(
     cookie: { maxAge: 1000 * 60 * 60 }
   })
 );
-app.use(sessionLocals);
-
 //session timeout
 app.use((req, res, next)=>{
   const hour = 1000 * 60 * 60;
@@ -75,6 +73,7 @@ app.use((req, res, next)=>{
   req.session.cookie.maxAge = hour;
   next();
 })
+app.use(sessionLocals);
 
 app.use(removeHeader);
 
@@ -91,7 +90,6 @@ app.use('/', productRoute);
 app.use('/', routeCart);
 app.use('/', routeOrder);
 app.use('/', routeComment);
-
 
 const port = process.env.PORT;
 

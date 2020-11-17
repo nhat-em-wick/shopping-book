@@ -222,6 +222,7 @@ module.exports.addProduct = async (req, res) => {
   try {
     const uploader = async (path) => await cloudinary.uploads(path, "images");
     const file = req.file;
+    if(!file) return res.redirect('back');
     const { path } = file;
     const newpath = await uploader(path);
     fs.unlinkSync(path);

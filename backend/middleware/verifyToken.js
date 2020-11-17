@@ -13,10 +13,9 @@ module.exports = async (req, res, next) => {
       const access_token = await jwt.sign({ _id: verifiedRefresh._id }, process.env.TOKEN_SECRET, {
         expiresIn: "30m",
       });
-      await tokenModel.updateOne(
-        {refresh_token: refresh_token},
-        {access_token: access_token}
-      );
+      const token = await tokenModel.findOne({refresh_token: refresh_token});
+            token.access_token = access_token;
+            token.save()
       res.cookie(
          "token",
          { access_token: access_token, refresh_token: refresh_token },

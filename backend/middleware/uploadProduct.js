@@ -22,7 +22,7 @@ module.exports = multer({
     ) {
       cb(null, true);
     } else {
-      req.flash('error',"Only .png, .jpg, .jpeg, .gif format allowed!")
+      req.flash('error',"File phải có định dạng .png .jpg . jpeg .gif")
       cb(null, false);
     }
   },

@@ -40,10 +40,10 @@
       <% for(let i = 1; i <= totalPages; i++){ %>
       <% if(i != page){ %>
       <% if(i>page-3&&i<page+3){ %>
-      <a href="?page=<%= i %>"><%= i %></a>
+      <a href="?page=<%= i %>" class="page"><%= i %></a>
       <% } %>
       <% }else{ %>
-      <a href=""><%= i %></a>
+      <a href="" class="page active"><%= i %></a>
       <% } %>
       <% } %>
       <% if(page<totalPages-2){ %>

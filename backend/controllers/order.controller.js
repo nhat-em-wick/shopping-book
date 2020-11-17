@@ -22,10 +22,11 @@ module.exports.order = async (req, res) => {
     });
     const newOrder = await order.save();
     // update sl trong kho
-    for (let product of Object.values(req.session.cart.items)) {
-      const productTotalQty = await productModel.findById(product.item._id);
-      productTotalQty.totalQty -= product.qty;
-      const updateProductTotalQty = await productTotalQty.save();
+    for (let productCart of Object.values(req.session.cart.items)) {
+      const product = await productModel.findById(productCart.item._id);
+      product.totalQty -= productCart.qty;
+      product.bought += productCart.qty;
+      const updateProduct = await product.save();
     }
     delete req.session.cart;
     req.flash('success', "Đặt hàng thành công");
@@ -57,10 +58,11 @@ module.exports.itemOrder = async (req, res) => {
 module.exports.cancelOrder = async (req, res) => {
   try {
     const order = await orderModel.findById(req.params.id);
-    for (let product of Object.values(order.items)) {
-      const productStore = await productModel.findById(product.item._id);
-      productStore.totalQty += product.qty;
-      const updateProductStore = await productStore.save();
+    for (let productCart of Object.values(order.items)) {
+      const product = await productModel.findById(productCart.item._id);
+      product.totalQty += productCart.qty;
+      product.bought -= productCart.qty;
+      const updateProduc = await product.save();
     }
     await orderModel.findByIdAndDelete(req.params.id);
     req.flash('success','Hủy đơn hàng thành công')
@@ -106,7 +108,7 @@ module.exports.adminSearchOrder = async (req, res) => {
       res.render("admin/orders/search_orders");
     } else {
       req.flash("q", q);
-      res.render("admin/orders/admin_order", pagination(page, 8, matchedOrders,0,moment));
+      res.render("admin/orders/search_orders", pagination(page, 8, matchedOrders,0,moment));
     }
   }catch (e) {
     res.status(500).send('lỗi server');
@@ -120,7 +122,7 @@ module.exports.updateStatus = async (req, res) => {
       { _id: req.body.orderId },
       { status: req.body.status }
     );
-    res.redirect("/admin/orders");
+    res.redirect("back");
   } catch (e) {
     res.status(500).send('lỗi server');
   }
@@ -129,7 +131,7 @@ module.exports.updateStatus = async (req, res) => {
 module.exports.deleteOrder = async (req, res) => {
   try {
     await orderModel.findByIdAndDelete(req.params.id);
-    res.redirect("/admin/orders");
+    res.redirect("back");
   } catch (e) {
     res.status(500).send('lỗi server');
   }

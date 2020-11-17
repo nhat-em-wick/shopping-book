@@ -61,7 +61,7 @@ module.exports.login = async (req, res) => {
         "token",
         { access_token: access_token, refresh_token: refreshToken },
         {
-          expires: new Date(Date.now() + 8 * 3600000),
+          expires: new Date(Date.now() + 12 * 3600000), //cookie will be removed after 12 hours
         }
       );
       req.session.user = {

@@ -49,7 +49,7 @@ router.post(
   verifyToken,
   checkAdmin,
   upload.single("mybook"),
-  
+  checkInput.checkAddProduct,
   productController.addProduct
 );
 router.get(
@@ -69,7 +69,7 @@ router.put(
   verifyToken,
   checkAdmin,
   upload.single("mybook"),
-  
+   checkInput.checkAddProduct,
   productController.editProduct
 );
 
