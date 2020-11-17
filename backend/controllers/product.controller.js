@@ -53,24 +53,24 @@ module.exports.searchProduct = async (req, res) => {
 module.exports.categoryProduct = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   
-  const q = req.params.id.replace(/-/g, " ");
+  const q = req.params.id
   try {
     const categories = await categoryModel.find();
     const categoryProduct = await productModel.find().populate("category");
     // lọc sản phẩm theo danh mục
     const matchedProducts = categoryProduct.filter((product) => {
       return (
-        removeAscent(product.category.name)
+        product.category.link
           .toLowerCase()
           .indexOf(q.toLowerCase()) !== -1
       );
     });
     if (matchedProducts.length < 1) {
       req.flash("error", "Không tìm thấy sản phẩm");
-      req.flash("category", q.replace(/ /g, "-"));
+      req.flash("category", q);
       res.render("products/category",pagination(page, 8, matchedProducts, categories));
     } else {
-      req.flash("category", q.replace(/ /g, "-"));
+      req.flash("category", q);
       res.render(
         "products/category",
         pagination(page, 8, matchedProducts, categories)
@@ -130,7 +130,7 @@ module.exports.singleProduct = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   try {
     const product = await productModel.findById(req.params.id);
-    const totalComments = await commentModel.find().populate('customerId');
+    const totalComments = await commentModel.find().populate('customerId').sort({ 'createdAt': -1 });
     const commentsProduct = totalComments.filter((comment)=>{
       return comment.productId.toString().indexOf(req.params.id) !== -1;
     });
@@ -145,9 +145,8 @@ module.exports.singleProduct = async (req, res) => {
 };
 
 module.exports.listJson = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
   try {
-    let totalProducts = await productModel.find();
+    let totalProducts = await productModel.find({soldNo: {$gt: 5}});
     res.json(pagination(page, 4, totalProducts));
   } catch (e) {
     res.status(500).send('lỗi server');

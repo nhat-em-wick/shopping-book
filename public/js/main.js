@@ -107,7 +107,6 @@ function updateStatus(order) {
     if (stepComplete) {
       statuses[i].classList.add("step-completed");
     }
-
     if (dataProp === order.status) {
       stepComplete = false;
       if (statuses[i].nextElementSibling) {
