@@ -147,7 +147,7 @@ module.exports.singleProduct = async (req, res) => {
 module.exports.listJson = async (req, res) => {
   try {
     let totalProducts = await productModel.find({soldNo: {$gt: 5}});
-    res.json(pagination(page, 4, totalProducts));
+    res.json(pagination(1, 4, totalProducts));
   } catch (e) {
     res.status(500).send('lỗi server');
   }
