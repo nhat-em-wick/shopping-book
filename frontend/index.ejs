@@ -75,8 +75,8 @@
 
 <script>
 	async function getFeaturedProducts() {
-		// const url = 'https://coder-nhat.herokuapp.com/featuredproduct'
-		 const url = 'http://localhost:3000/featuredproducts'
+		const url = 'https://coder-nhat.herokuapp.com/featuredproducts'
+		//  const url = 'http://localhost:3000/featuredproducts'
 		try {
 			const response = await axios.get(url);
 			renderProduct(response.data.records,"featured")
@@ -86,8 +86,8 @@
 	}
 
 	async function getLatestsProducts() {
-		// const url = 'https://coder-nhat.herokuapp.com/listjson'
-		const url = 'http://localhost:3000/latestproducts'
+		const url = 'https://coder-nhat.herokuapp.com/latestproducts'
+		// const url = 'http://localhost:3000/latestproducts'
 		try {
 			const response = await axios.get(url);
 			renderProduct(response.data.records,"latest")
