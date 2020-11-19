@@ -1,12 +1,12 @@
 const regName = /^[A-z\ ]{3,}[^\ \$\{\}\!\@\#\^\&\*\%]$/;
 const regEmail = /^[A-z0-9]{5,32}\@[a-z]{2,}\.[a-z]{2,5}(\.[a-z]{2,5})?$/;
 const regPass = /^(?=.*[A-z])(?=.*[0-9])([A-z0-9\!\@\#\$\&\*]){8,32}$/;
-const regAddress = /^[A-z0-9\ \.\,\-]{8,}[^\ \$\{\}\!\@\#\^\&\*\%]$/g;
+const regAddress = /^[A-z0-9\ \.\,\-]{8,}[^\ \$\{\}\!\@\#\^\&\*\%]$/;
 const regPhone = /^0[1-9]{9}$/;
 const regSearch = /^[A-z0-9\ \@\.\-]*[^\!\#\$\^\<\>\{\}\&\,\;\ ]$/;
 const regNumber = /^[0-9]*$/;
-const regComment = /^[A-z0-9\ \.\,\"\(\)]{50,}[^\ \$\{\}\!\@\#\^\&\*\%]$/g;
-const regTitle = /^[A-z0-9\ \.\,\"\(\)]{8,}[^\ \$\{\}\!\@\#\^\&\*\%]$/g;
+const regComment = /^[A-z0-9\ \.\,\"\(\)]{50,}[^\ \$\{\}\!\@\#\<\>\^\&\*\%]$/;
+const regTitle = /^[A-z0-9\ \"\(\)]{2,}[^\ \$\{\}\!\@\#\<\>\^\&\*\%]$/;
 const fs = require("fs");
 const removeAscent = require("./removeAscent");
 module.exports.checkLogin = (req, res, next) => {
@@ -16,7 +16,9 @@ module.exports.checkLogin = (req, res, next) => {
     req.flash("error", "Không được để trống");
     return res.redirect("back");
   }
-  if (regEmail.test(email) && regPass.test(password)) return next();
+  let validEmail = regEmail.test(email);
+  let validPass = regPass.test(password);
+  if (validEmail && validPass) return next();
     req.flash("email", email);
     req.flash("error", "Email hoặc mật khẩu không hợp lệ");
     return res.redirect("back");
@@ -37,9 +39,13 @@ module.exports.checkRegister = (req, res, next) => {
     req.flash("email", email);
     return res.redirect("back");
   }
-  if (regName.test(removeAscent(name))) {
-    if (regEmail.test(email)) {
-      if (regPass.test(password) && regPass.test(conf_password)) return next();
+  let validName = regName.test(removeAscent(name))
+  let validEmail = regEmail.test(email)
+  let validPass = regPass.test(password)
+  let valiConf_Pass = regPass.test(conf_password)
+  if (validName) {
+    if (validEmail) {
+      if (validPass && valiConf_Pass) return next();
       req.flash(
         "error",
         "Mật khẩu phải chứa 1 ký tự chữ, 1 ký tự số và dài từ 8 đến 32 ký tự"
@@ -84,8 +90,11 @@ module.exports.checkChangeInfo = (req, res, next) => {
     req.flash("name", name);
     return res.redirect("back");
   }
-  if (regName.test(removeAscent(name))) {
-    if (regPass.test(password) && regPass.test(conf_password)) return next();
+  let validName = regName.test(removeAscent(name))
+  let validPass = regPass.test(password)
+  let validConf_Pass = regPass.test(conf_password)
+  if (validName) {
+    if (validPass && validConf_Pass) return next();
     req.flash(
       "error",
       "Mật khẩu phải chứa 1 ký tự chữ, 1 ký tự số và dài từ 8 đến 32 ký tự"
@@ -122,7 +131,9 @@ module.exports.checkOrder = (req, res, next) => {
     req.flash("address", address);
     return res.redirect("/checkout");
   }
-  if (regPhone.test(phone) && regAddress.test(removeAscent(address)))
+  let validPhone = regPhone.test(phone)
+  let validAddress = regAddress.test(removeAscent(address))
+  if (validPhone && validAddress)
     return next();
   req.flash("phone", phone);
   req.flash("address", address);
@@ -136,7 +147,7 @@ module.exports.checkComment = (req, res, next) => {
     req.flash("error", "Không được để trống");
     return res.redirect("back");
   }
-  q = removeAscent(content);
+  let valid = removeAscent(content);
   if (regComment.test(removeAscent(content))) return next();
   req.flash("error", "Nội dung chứa ít nhất 50 kí tự");
   req.flash("content", content);
@@ -151,17 +162,13 @@ module.exports.checkAddProduct = (req, res, next) => {
     req.flash("description", description);
     req.flash("price", price);
     req.flash("totalQty", totalQty);
-    res.redirect("back");
+    return res.redirect("back");
   }
-
-  if (
-    regTitle.test(removeAscent(title)) &&
-    regComment.test(removeAscent(description)) &&
-    regNumber.test(price) &&
-    regNumber.test(totalQty)
-  )
-    return next();
-    
+  let validTitle = regTitle.test(removeAscent(title))
+  let validDes = regComment.test(removeAscent(description))
+  let validPrice = regNumber.test(price)
+  let validQty = regNumber.test(totalQty)
+  if(validTitle && validDes && validPrice && validQty) return next();
   req.flash("error", "Tên sản phẩm, mô tả, giá hoặc số lượng không hợp lệ");
   req.flash("title", title);
   req.flash("description", description);

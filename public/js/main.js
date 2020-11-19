@@ -97,10 +97,6 @@ let order = hiddenInput ? hiddenInput.value : null;
 order = JSON.parse(order);
 
 function updateStatus(order) {
-  for (let i = 0; i < statuses.length; i++) {
-    statuses[i].classList.remove("step-completed");
-    statuses[i].classList.remove("current");
-  }
   let stepComplete = true;
   for (let i = 0; i < statuses.length; i++) {
     let dataProp = statuses[i].dataset.status;

@@ -6,10 +6,10 @@
                 <% if(messages.error){ %> 
                     <small id="err"><%= messages.error %> </small>
                 <% } %>
-                <input type="text" placeholder="Tên sản phẩm" name="title" value=<%=messages.title %>>
+                <input type="text" placeholder="Tên sản phẩm" name="title" value="<%=messages.title %>">
                 <textarea name="description"  cols="33" rows="5" placeholder="Mô tả sản phẩm"><%= messages.description %></textarea>
                 <input type="text" placeholder="Giá" name="price" value=<%= messages.price %>>
-                <input type="text" placeholder="Tổng số lượng" name="totalQty" value=<%= messages.totalQty %> >
+                <input type="text" placeholder="Tổng số lượng" name="totalQty" value="<%= messages.totalQty %>">
                 <input type="file" name="mybook" class="input-file" accept="image/png, image/jpeg, image/jpg, image/gif">
                 <select name="category">
                     <% categories.forEach(category => { %>

@@ -25,7 +25,7 @@ module.exports.order = async (req, res) => {
     for (let productCart of Object.values(req.session.cart.items)) {
       const product = await productModel.findById(productCart.item._id);
       product.totalQty -= productCart.qty;
-      product.bought += productCart.qty;
+      product.soldNo += productCart.qty;
       const updateProduct = await product.save();
     }
     delete req.session.cart;
@@ -61,7 +61,7 @@ module.exports.cancelOrder = async (req, res) => {
     for (let productCart of Object.values(order.items)) {
       const product = await productModel.findById(productCart.item._id);
       product.totalQty += productCart.qty;
-      product.bought -= productCart.qty;
+      product.soldNo -= productCart.qty;
       const updateProduc = await product.save();
     }
     await orderModel.findByIdAndDelete(req.params.id);
