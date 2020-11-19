@@ -65,9 +65,9 @@
 			</div>
 		</div>
 		<div class="slider-indicator">
-			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1605624348/user-1_koxohp.png" class="active" data-id=0>
-			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1605624357/user-2_qnr15p.png" data-id=1>
-			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1605624348/user-1_koxohp.png" data-id=2>
+			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1605624348/user-1_koxohp.png" alt="img" class="active" data-id=0>
+			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1605624357/user-2_qnr15p.png" alt="img" data-id=1>
+			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1605624348/user-1_koxohp.png" alt="img" data-id=2>
 		</div>
 
 	</div>
@@ -75,8 +75,8 @@
 
 <script>
 	async function getFeaturedProducts() {
-		const url = 'https://coder-nhat.herokuapp.com/featuredproducts'
-		//  const url = 'http://localhost:3000/featuredproducts'
+		// const url = 'https://coder-nhat.herokuapp.com/featuredproducts'
+		 const url = 'http://localhost:3000/featuredproducts'
 		try {
 			const response = await axios.get(url);
 			renderProduct(response.data.records,"featured")
@@ -86,8 +86,8 @@
 	}
 
 	async function getLatestsProducts() {
-		const url = 'https://coder-nhat.herokuapp.com/latestproducts'
-		// const url = 'http://localhost:3000/latestproducts'
+		// const url = 'https://coder-nhat.herokuapp.com/latestproducts'
+		const url = 'http://localhost:3000/latestproducts'
 		try {
 			const response = await axios.get(url);
 			renderProduct(response.data.records,"latest")

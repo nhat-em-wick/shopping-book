@@ -346,7 +346,7 @@ img {
   }
   100% {
     opacity: 1;
-    transform: translateX(-15px);
+    transform: translateX(0px);
   }
 }
 .testimonials .slider p {
