@@ -1,6 +1,7 @@
 require("dotenv/config");
 const userModel = require("../models/user.model");
-const tokenModel = require("../models/token.model")
+const orderModel = require("../models/order.model")
+const commentModel = require("../models/comment.model")
 const path = require("path");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
@@ -39,29 +40,25 @@ module.exports.login = async (req, res) => {
       // create and assign a token
       const access_token = await jwt.sign(
         { _id: user._id },
-        process.env.TOKEN_SECRET,
+        process.env.ACCESS_TOKEN_SECRET,
         {
           expiresIn: "30m",
         }
       );
       const refreshToken = await jwt.sign(
         { _id: user._id },
-        process.env.REFRESH_TOKEN,
+        process.env.REFRESH_TOKEN_SECRET,
         {
           expiresIn: "3d",
         }
       );
-      const token = new tokenModel({
-        access_token: access_token,
-        refresh_token: refreshToken,
-      });
-      const saveToken = await token.save();
+      
       
       res.cookie(
         "token",
         { access_token: access_token, refresh_token: refreshToken },
         {
-          expires: new Date(Date.now() + 12 * 3600000), //cookie will be removed after 12 hours
+          expires: new Date(Date.now() + 8 * 3600000), //cookie will be removed after 8 hours
         }
       );
       req.session.user = {
@@ -160,7 +157,7 @@ module.exports.forgotPassword = async (req, res) => {
       to: email,
       subject: "Account Reset Password",
       html: `<h2>Please click on given link to reset password</h2>
-            <h5>please click http://localhost:3000/resetpassword?q=${token} to reset</h5>`
+            <h5>please click http://localhost:3000/resetpassword/${token} to reset</h5>`
     };
     mg.messages().send(data, function (error, body) {
       console.log(body);
@@ -200,7 +197,7 @@ module.exports.resetPassword = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
         let changePass = await user.updateOne({ password: hashedPassword });
         req.flash("success", "Mật khẩu thay dổi thành công");
-        res.redirect("/resetpassword");
+        res.redirect("back");
       }
     } catch (e) {
       res.status(500).send('lỗi server')
@@ -254,6 +251,8 @@ module.exports.searchUser = async (req, res) => {
 module.exports.deleteUser = async (req, res) => {
   try {
     await userModel.findByIdAndDelete(req.params.id);
+    await orderModel.findOneAndDelete({customerId: req.params.id});
+    await commentModel.findOneAndDelete({customerId: req.params.id});
     req.flash("success", "Xóa thành công")
     res.redirect("/admin/users");
   } catch (e) {
@@ -261,32 +260,6 @@ module.exports.deleteUser = async (req, res) => {
   }
 };
 
-
-// module.exports.refreshToken = async (req, res) => {
-//   const refreshToken = req.cookies.refresh_token;
-//     try {
-//       const decoded =await jwt.decode(refreshToken);
-//       const access_token = await jwt.sign({ _id: decoded._id }, process.env.TOKEN_SECRET, {
-//         expiresIn: "30m",
-//       });
-      
-//       await tokenModel.updateOne(
-//        {refreshToken: refreshToken},
-//        {access_token: access_token}
-//      );
-//       res.cookie(
-//         "token",
-//         { access_token: token, refresh_token: refreshToken },
-//         {
-//           expires: new Date(Date.now() + 8 * 3600000),
-//         }
-//       );
-      
-//     } catch (e) {
-//      res.status(403).send("Token không hợp lệ")
-//     }
-  
-// };
 
 
 

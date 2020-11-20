@@ -456,6 +456,7 @@ select:focus {
   justify-content: space-around;
   align-items: center;
   border-radius: 5px;
+  pointer-events: none;
 }
 
 .drop-down span {
@@ -478,6 +479,7 @@ select:focus {
 .drop-down:hover > ul {
   opacity: 1;
   transform: translateY(0px);
+  pointer-events: auto;
 }
 
 .new-box {

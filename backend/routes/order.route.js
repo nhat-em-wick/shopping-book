@@ -7,7 +7,7 @@ const checkInput = require("../middleware/checkinput");
 
 
 
-router.get("/checkout", orderController.checkOut);
+router.get("/checkout",verifyToken, orderController.checkOut);
 
 router.post(
   "/orders",

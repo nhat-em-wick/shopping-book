@@ -5,6 +5,6 @@ module.exports = async (req, res, next) => {
   if (user.isAdmin == "true") {
     return next();
   } else {
-    return res.status(403).redirect('/');
+    return res.status(403).send('Không được phép');
   }
 };

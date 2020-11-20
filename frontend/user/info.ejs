@@ -5,6 +5,8 @@
 			<form action="/my/edit" id="changeInfo" method="POST">
 				<% if(messages.error){ %> 
 				<small id="err"><%= messages.error %> </small>
+				<% }else{ %>
+				<small id="success"><%= messages.success %></small>
 				<% } %> 
 				  <input type="email" disabled value="<%= user.email %>">
 				  <input type="text" id="name" name="name" value="<%= user.name %>">
