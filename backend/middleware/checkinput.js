@@ -124,7 +124,7 @@ module.exports.checkNewPass = (req, res, next) => {
   if (validPass && validConf_Pass) return next();
   req.flash(
     "error",
-    "Mật khẩu phải chứa 1 ký tự chữ, 1 ký tự số và chứa ít nhất 8 ký tự"
+    "Mật khẩu phải chứa 1 ký tự chữ, 1 ký tự số và dài từ 8 đến 32 ký tự"
   );
   return res.redirect('back');
 };
