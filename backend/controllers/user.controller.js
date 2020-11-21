@@ -24,7 +24,7 @@ module.exports.pageRegister = (req, res) => {
 
 module.exports.login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await userModel.findOne({ email: req.body.email });
+  const user = await userModel.find({ email: req.body.email });
   if (!user) {
     req.flash("error", "Email không tồn tại");
     req.flash("email", email);
