@@ -5,7 +5,7 @@ const regAddress = /^[^\ \$\{\}\!\@\#\^\&\*\%][A-z0-9\ \.\,\-]{8,}[^\ \$\{\}\!\@
 const regPhone = /^0[1-9]{9}$/;
 const regSearch = /^[A-z0-9\ \@\.\-]*[^\!\#\$\^\<\>\{\}\&\,\;\ ]$/;
 const regNumber = /^[0-9]*$/;
-const regComment = /^[^\ \$\{\}\!\@\#\^\&\*\%][A-z0-9\ \.\,\"\(\)\?]{50,}[^\ \$\{\}\!\@\#\<\>\^\&\*\%]$/;
+const regComment = /^[^\ \$\{\}\!\@\#\^\&\*\%][A-z0-9\ \.\,\"\(\)\?\-\:]{50,}[^\ \$\{\}\!\@\#\<\>\^\&\*\%]$/;
 const regTitle = /^[^\ \$\{\}\!\@\#\^\&\*\%][A-z0-9\ \"\(\)]{2,}[^\ \$\{\}\!\@\#\<\>\^\&\*\%]$/;
 const fs = require("fs");
 const removeAscent = require("./removeAscent");
@@ -170,6 +170,7 @@ module.exports.checkAddProduct = (req, res, next) => {
     req.flash("totalQty", totalQty);
     return res.redirect("back");
   }
+  let d = removeAscent(description)
   let validTitle = regTitle.test(removeAscent(title))
   let validDes = regComment.test(removeAscent(description))
   let validPrice = regNumber.test(price)

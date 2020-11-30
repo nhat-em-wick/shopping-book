@@ -165,7 +165,7 @@ module.exports.latestProducts = async (req, res) => {
 // ADMIN
 
 module.exports.pageAddCategory = (req, res) => {
-  res.render("admin/add_category");
+  res.render("admin/products/add_category");
 };
 
 module.exports.addCategory = async (req, res) => {

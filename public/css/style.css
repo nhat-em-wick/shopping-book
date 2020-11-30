@@ -315,73 +315,8 @@ img {
   transform: translateY(-5px);
 }
 
-.testimonials {
-  float: left;
-  width: 100%;
-  margin-bottom: 70px;
-}
 
-.testimonials .container {
-  background: var(--dark-color);
-}
-.testimonials .slider {
-  border: 1px solid #333;
-  max-width: 600px;
-  margin: auto;
-  text-align: center;
-  padding: 30px;
-  min-height: 300px;
-}
-.testimonials .slider .slide {
-  display: none;
-}
-.testimonials .slider .slide.active {
-  display: block;
-  animation: slide 1s ease;
-}
-@keyframes slides {
-  0% {
-    opacity: 0;
-    transform: translateX(-15px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0px);
-  }
-}
-.testimonials .slider p {
-  font-size: 18px;
-  color: var(--white-color);
-  word-spacing: 2px;
-}
-.testimonials .slider .slide-info h3 {
-  color: var(--white-color);
-  font-size: 18px;
-  margin: 60px 0 10px;
-}
-.testimonials .slider .slide-info span {
-  display: block;
-  font-size: 16px;
-  color: #11bead;
-}
-.testimonials .slider-indicator {
-  text-align: center;
-  padding-top: 20px;
-}
-.testimonials .slider-indicator img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: inline-block;
-  margin: 0 8px;
-  opacity: 0.2;
-  border: 2px solid var(--white-color);
-  cursor: pointer;
-  transition: opacity 1s ease;
-}
-.testimonials .slider-indicator img.active {
-  opacity: 1;
-}
+
 /*all products*/
 .row-2 {
   justify-content: space-between;
