@@ -23,7 +23,7 @@ module.exports.order = async (req, res) => {
     const newOrder = await order.save();
     // update sl trong kho
     for (let productCart of Object.values(req.session.cart.items)) {
-      const product = await productModel.findById(productCart.item._id);
+      let product = await productModel.findById(productCart.item._id);
       product.totalQty -= productCart.qty;
       product.soldNo += productCart.qty;
       const updateProduct = await product.save();
@@ -39,7 +39,7 @@ module.exports.order = async (req, res) => {
 module.exports.showOrderUser = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req.user._id);
-    const orders = await orderModel.find({ customerId: id }).sort({ 'createdAt': -1 });
+    let orders = await orderModel.find({ customerId: id }).sort({ 'createdAt': -1 });
     return res.render("orders/index", { orders: orders, moment: moment });
   } catch (err) {
     res.status(500).send('lỗi server');
@@ -48,7 +48,7 @@ module.exports.showOrderUser = async (req, res) => {
 
 module.exports.itemOrder = async (req, res) => {
   try {
-    const order = await orderModel.findById(req.params.id);
+    let order = await orderModel.findById(req.params.id);
     return res.render("orders/view", { order: order });
   } catch (err) {
     res.status(500).send('lỗi server');
@@ -57,7 +57,7 @@ module.exports.itemOrder = async (req, res) => {
 
 module.exports.cancelOrder = async (req, res) => {
   try {
-    const order = await orderModel.findById(req.params.id);
+    let order = await orderModel.findById(req.params.id);
     for (let productCart of Object.values(order.items)) {
       const product = await productModel.findById(productCart.item._id);
       product.totalQty += productCart.qty;
@@ -74,7 +74,7 @@ module.exports.cancelOrder = async (req, res) => {
 
 module.exports.statusOrder = async (req, res) => {
   try {
-    const order = await orderModel.findById(req.params.id);
+    let order = await orderModel.findById(req.params.id);
     res.render("orders/status", { order: order});
   } catch (e) {
     res.status(500).send('lỗi server');
@@ -86,7 +86,7 @@ module.exports.adminOrder = async (req, res) => {
   try {
     let page = parseInt(req.query.page) || 1;
     let perPage = 8; // item in page
-    const orders = await orderModel.find().populate("customerId", "-password").sort({ 'createdAt': -1 });
+    let orders = await orderModel.find().populate("customerId", "-password").sort({ 'createdAt': -1 });
     res.render("admin/orders/admin_order", pagination(page, perPage, orders,0, moment));
   } catch (e) {
     res.status(500).send('lỗi server');
@@ -96,7 +96,7 @@ module.exports.adminOrder = async (req, res) => {
 module.exports.adminSearchOrder = async (req, res) => {
   let q = req.query.q;
   try{
-    const orders = await orderModel.find().populate('customerId');
+    let orders = await orderModel.find().populate('customerId');
     let matchedOrders = orders.filter((order) => {
       return order.phone.indexOf(q) !== -1; // neu q nam trong title thi gia tri lon hon -1
     });

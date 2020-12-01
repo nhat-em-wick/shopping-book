@@ -8,6 +8,8 @@ const checkInput = require("../middleware/checkinput");
 
 router.get('/comment/:id',  verifyToken, commentController.pageComment)
 router.post('/comment/:id',checkInput.checkComment, verifyToken, commentController.saveComment)
+router.get('/review', verifyToken, commentController.pageReview)
+router.post('/review',checkInput.checkComment, verifyToken, commentController.saveReview)
 
 module.exports = router;
  

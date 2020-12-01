@@ -28,6 +28,7 @@ connection
     console.log("Connection failed...");
   });
 
+const routeIndex = require('./routes/index.route')
 const routeUser = require("./routes/user.route");
 const productRoute = require("./routes/product.route");
 const routeCart = require("./routes/cart.route");
@@ -81,10 +82,7 @@ app.use(limitRequest.limiterServer);
 
 app.use(flash())
 
-app.get('/', (req, res) => {
-  res.render('index');
-});
-
+app.use('/', routeIndex);
 app.use('/', routeUser);
 app.use('/', productRoute);
 app.use('/', routeCart);

@@ -8,6 +8,7 @@ var jwt = require("jsonwebtoken");
 const mailgun = require("mailgun-js");
 const pagination = require("./pagination");
 
+
 // api mailgun
 const mg = mailgun({
   apiKey: process.env.MAILGUN_APIKEY,
@@ -24,13 +25,13 @@ module.exports.pageRegister = (req, res) => {
 
 module.exports.login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await userModel.findOne({ email: req.body.email });
+  const user = await userModel.findOne({ email: email });
   if (!user) {
     req.flash("error", "Email không tồn tại");
     req.flash("email", email);
     return res.redirect("/login");
   }
-  const Pass = await bcrypt.compare(req.body.password, user.password);
+  const Pass = await bcrypt.compare(password, user.password);
   if (!Pass) {
     req.flash("email", email);
     req.flash("error", "Mật khẩu sai");
@@ -52,8 +53,7 @@ module.exports.login = async (req, res) => {
           expiresIn: "3d",
         }
       );
-      
-      
+
       res.cookie(
         "token",
         { access_token: access_token, refresh_token: refreshToken },
@@ -77,7 +77,7 @@ module.exports.login = async (req, res) => {
 module.exports.register = async (req, res) => {
   const { name, email, password, conf_password } = req.body;
   // checking if user is already in the database
-  const emailExist = await userModel.findOne({ email: req.body.email });
+  const emailExist = await userModel.findOne({ email: email });
   if (emailExist) {
     req.flash("error", "Email đã tồn tại");
     req.flash("name", name);
@@ -89,7 +89,7 @@ module.exports.register = async (req, res) => {
     try {
       // // hash password
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+      const hashedPassword = await bcrypt.hash(password, salt);
       // create user
       const user = new userModel({
         name: name,
@@ -104,6 +104,8 @@ module.exports.register = async (req, res) => {
     }
   }
 };
+
+
 
 module.exports.myInfo = async (req, res) => {
   try {
@@ -124,7 +126,7 @@ module.exports.changeInfo = async (req, res) => {
       user.name = name || user.name;
       user.password = hashedPassword || user.password;
       const updateUser = await user.save();
-      req.session.user = {name:updateUser.name}
+      req.session.user.name = updateUser.name
       req.flash("success", "Thay đổi thành công")
       res.redirect("/my");
     } catch (e) {
@@ -195,7 +197,7 @@ module.exports.resetPassword = async (req, res) => {
         // hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-        let changePass = await user.updateOne({ password: hashedPassword });
+        const changePass = await user.updateOne({ password: hashedPassword });
         req.flash("success", "Mật khẩu thay dổi thành công");
         res.redirect("back");
       }
@@ -217,9 +219,9 @@ module.exports.logout = (req, res) => {
 
 module.exports.adminUser = async (req, res) => {
   try {
-    let page = parseInt(req.query.page) || 1;
-    let perPage = 8;
-    const users = await userModel.find({ isAdmin: "false" });
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 8;
+    let users = await userModel.find({ isAdmin: "false" }).sort({ 'createdAt': -1 });
     res.render("admin/users/admin_user", pagination(page, perPage, users));
   } catch (e) {
     res.status(500).send('lỗi server');
@@ -227,14 +229,14 @@ module.exports.adminUser = async (req, res) => {
 };
 
 module.exports.searchUser = async (req, res) => {
-  let q = req.query.q;
+  const q = req.query.q;
   try{
     let totalUsers = await userModel.find({ isAdmin: false });
     let matchedUsers = totalUsers.filter((user) => {
       return user.email.toLowerCase().indexOf(q.toLowerCase()) !== -1; // neu q nam trong title thi gia tri lon hon -1
     });
-    let page = parseInt(req.query.page) || 1;
-    let perPage = 8; // item in page
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 8; // item in page
     if (matchedUsers.length < 1) {
       req.flash("error", `Không tìm thấy khách hàng: "${q}"`);
       req.flash("q", q);

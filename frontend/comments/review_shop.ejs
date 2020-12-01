@@ -1,0 +1,12 @@
+<div class="small-container single-product">
+    <div class="col-2 write-comment">
+      <form action="/review" method="post">
+          <label for="write-comment">Viết nhận xét của bạn bên dưới:</label>
+          <textarea name="content" id="write-comment" placeholder="Nhận xét của bạn về shop" width="100%"><%= messages.content %></textarea>
+          <% if(messages.error){ %> 
+            <small id="err"><%= messages.error %></small>
+            <% } %> 
+          <button type="submit" class="btn-add-comment">Gửi</button>
+      </form>
+    </div>
+</div>

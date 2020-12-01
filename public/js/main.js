@@ -41,25 +41,26 @@ window.addEventListener("scroll", () => {
 toTop.addEventListener("click", () => {
   window.scrollTo(0, 0);
 });
-
-// SLIDE
-try {
-  const slides = document.querySelector(".slider").children;
-  const indicatorImg = document.querySelector(".slider-indicator").children;
-  for (let i = 0; i < indicatorImg.length; i++) {
-    indicatorImg[i].addEventListener('click', function() {
-      for (let j = 0; j < indicatorImg.length; j++) {
-        indicatorImg[j].classList.remove("active");
-      }
-      this.classList.add("active");
-      const id = this.getAttribute("data-id");
-      for (let j = 0; j < slides.length; j++) {
-        slides[j].classList.remove("active");
-      }
-      slides[id].classList.add("active");
-    });
-  }
-} catch {}
+//slide
+let slideIndex = 1;
+	showSlides(slideIndex)
+	function plusSlides(n) {
+	  showSlides(slideIndex += n);
+	}
+	
+	function currentSlide(n) {
+	  showSlides(slideIndex = n);
+	}
+	
+	 function showSlides(n) {
+	  const slides = document.getElementsByClassName("mySlides");
+	  if (n > slides.length) {slideIndex = 1}    
+	  if (n < 1) {slideIndex = slides.length}
+	  for (let i = 0; i < slides.length; i++) {
+	      slides[i].style.display = "none";  
+	  }
+	  slides[slideIndex-1].style.display = "block";  
+	}
 
 // INFO
 const password = document.querySelector("#password");

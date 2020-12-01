@@ -10,62 +10,65 @@
 		</div>
 	</div>
 </div>
+
+<% if(featureds!=0){ %> 
 <div class="categories">
 	<div class="small-container">
+		
 		<h2 class="title">Sản Phẩm Nổi Bật</h2>
 		<div class="row" id="featured">
+			<% featureds.forEach(featured =>{ %>
+				<div class="col-4">
+					<div class="new-box">
+					  <img src="<%= featured.image %>">
+					  <div class="new-link">
+						<a href="/products/view/<%= featured._id %>" class="button">XEM SẢN PHẨM</a>
+					  </div>
+					</div>
+					<p id="gia"> <%= featured.price.toLocaleString('de-DE', { style: 'currency', currency: 'VND' }) %></p>
+				  </div>
+			<% }) %>
 		</div>
 	</div>
 </div>
+<% } %>
+
+<% if(latests!=0){ %> 
 <div class="categories">
 	<div class="small-container">
 		<h2 class="title">Sản Phẩm Mới Nhất</h2>
 		<div class="row" id="latest">
+			<% latests.forEach(latest =>{ %>
+				<div class="col-4">
+					<div class="new-box">
+					  <img src="<%= latest.image %>">
+					  <div class="new-link">
+						<a href="/products/view/<%= latest._id %>" class="button">XEM SẢN PHẨM</a>
+					  </div>
+					</div>
+					<p id="gia"><%= latest.price.toLocaleString('de-DE', { style: 'currency', currency: 'VND' }) %></p>
+				  </div>
+			<% }) %>
 		</div>
+	
 	</div>
 </div>
+<% } %> 
 
-<script>
-	async function getFeaturedProducts() {
-		// const url = 'https://coder-nhat.herokuapp.com/featuredproducts'
-		 const url = 'http://localhost:3000/featuredproducts'
-		try {
-			const response = await axios.get(url);
-			renderProduct(response.data.records,"featured")
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	async function getLatestsProducts() {
-		// const url = 'https://coder-nhat.herokuapp.com/latestproducts'
-		const url = 'http://localhost:3000/latestproducts'
-		try {
-			const response = await axios.get(url);
-			renderProduct(response.data.records,"latest")
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
-	function renderProduct(products, id) {
-		const listHTML = document.getElementById(id);
-		try {
-			let content = products.map((item) => {
-				return `<div class="col-4">
-        <div class="new-box">
-          <img src="${item.image}">
-          <div class="new-link">
-            <a href="/products/view/${item._id}" class="button">XEM SẢN PHẨM</a>
-          </div>
-        </div>
-        <p id="gia"> ${item.price.toLocaleString('de-DE', { style: 'currency', currency: 'VND' })}</p>
-      </div>`
-			})
-			listHTML.innerHTML = content.join('');
-		} catch{
-		}
-	}
-	getFeaturedProducts();
-	getLatestsProducts();
-</script>
+<% if(reviews!=0){ %> 
+<div class="testimonial">
+	<h2 class="title">Chia Sẽ Của Khách Hàng</h2>
+	<div class="slideshow-container">
+	<div id="show">
+		<% reviews.forEach(review =>{ %>
+			<div class="mySlides">
+				<q><%= review.content %></q>
+				<p class="author">- <%= review.customerId.name %></p>
+		  </div>
+		<% }) %>
+	</div>
+	<a class="prev" onclick="plusSlides(-1)">❮</a>
+	<a class="next" onclick="plusSlides(1)">❯</a>
+	</div>
+</div>	
+<% } %>

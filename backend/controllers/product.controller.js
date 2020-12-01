@@ -14,8 +14,8 @@ module.exports.listProduct = async (req, res) => {
     // panigation
     const page = parseInt(req.query.page) || 1;
    
-    const categories = await categoryModel.find();
-    const totalProducts = await productModel.find();
+    let categories = await categoryModel.find();
+    let totalProducts = await productModel.find();
     res.render(
       "products/index",
       pagination(page, 12, totalProducts, categories)
@@ -55,10 +55,10 @@ module.exports.categoryProduct = async (req, res) => {
   
   const q = req.params.id
   try {
-    const categories = await categoryModel.find();
-    const categoryProduct = await productModel.find().populate("category");
+    let categories = await categoryModel.find();
+    let categoryProduct = await productModel.find().populate("category");
     // lọc sản phẩm theo danh mục
-    const matchedProducts = categoryProduct.filter((product) => {
+    let matchedProducts = categoryProduct.filter((product) => {
       return (
         product.category.link
           .toLowerCase()
@@ -87,10 +87,10 @@ module.exports.categoryProductSearch = async (req, res) => {
   const category = req.params.id.replace(/-/g, " ");
   const q = req.query.q;
   try {
-    const categories = await categoryModel.find();
-    const categoryProduct = await productModel.find().populate("category");
+    let categories = await categoryModel.find();
+    let categoryProduct = await productModel.find().populate("category");
     // lọc sản phẩm theo danh mục
-    const matchedProductsCategory = categoryProduct.filter((product) => {
+    let matchedProductsCategory = categoryProduct.filter((product) => {
       return (
         removeAscent(product.category.name)
           .toLowerCase()
@@ -98,7 +98,7 @@ module.exports.categoryProductSearch = async (req, res) => {
       );
     });
     // tìm sản phẩm theo danh mục
-    const matchedProductsSearch = matchedProductsCategory.filter((product) => {
+    let matchedProductsSearch = matchedProductsCategory.filter((product) => {
       return (
         removeAscent(product.title)
           .toLowerCase()
@@ -130,8 +130,8 @@ module.exports.singleProduct = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   try {
     const product = await productModel.findById(req.params.id);
-    const totalComments = await commentModel.find().populate('customerId').sort({ 'createdAt': -1 });
-    const commentsProduct = totalComments.filter((comment)=>{
+    let totalComments = await commentModel.find().populate('customerId').sort({ 'createdAt': -1 });
+    let commentsProduct = totalComments.filter((comment)=>{
       return comment.productId.toString().indexOf(req.params.id) !== -1;
     });
     if(commentsProduct.length < 1){
@@ -156,7 +156,7 @@ module.exports.featuredProducts = async (req, res) => {
 module.exports.latestProducts = async (req, res) => {
   try {
     let products = await productModel.find().sort({ 'createdAt': -1 });
-    res.json(pagination(1, 4, products));
+    res.json(pagination(1, 6, products));
   } catch (e) {
     res.status(500).send('lỗi server');
   }
@@ -187,7 +187,7 @@ module.exports.adminProduct = async (req, res) => {
   try {
     // panigation
     let page = parseInt(req.query.page) || 1;
-    let totalProducts = await productModel.find();
+    let totalProducts = await productModel.find().sort({ 'createdAt': -1 });
     res.render("admin/products/admin_product", pagination(page, 8, totalProducts));
   } catch (e) {
     res.status(500).send('lỗi server');
