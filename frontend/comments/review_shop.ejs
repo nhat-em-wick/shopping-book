@@ -5,6 +5,8 @@
           <textarea name="content" id="write-comment" placeholder="Nhận xét của bạn về shop" width="100%"><%= messages.content %></textarea>
           <% if(messages.error){ %> 
             <small id="err"><%= messages.error %></small>
+            <% }else{ %>
+              <small id="success"><%= messages.success %></small>
             <% } %> 
           <button type="submit" class="btn-add-comment">Gửi</button>
       </form>

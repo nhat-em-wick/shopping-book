@@ -64,12 +64,12 @@ app.use(
     resave: false,
     store:mongoStore,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 }
+    cookie: { maxAge: 1000 * 60 * 60*2 }
   })
 );
 //session timeout
 app.use((req, res, next)=>{
-  const hour = 1000 * 60 * 60;
+  const hour = 1000 * 60 * 60*2;
   req.session.cookie.expires = new Date(Date.now() + hour)
   req.session.cookie.maxAge = hour;
   next();

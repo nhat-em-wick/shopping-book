@@ -41,7 +41,8 @@ module.exports.saveReview = async (req, res) => {
             customerId: req.user._id
         })
         const saveReview = review.save();
-        res.redirect('/')
+        req.flash('success','Cám ơn bạn đã nhận xét.')
+        res.redirect('back')
     }catch(e){
         res.status(500).send('lỗi server')
     }

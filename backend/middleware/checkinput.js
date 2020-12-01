@@ -170,7 +170,7 @@ module.exports.checkAddProduct = (req, res, next) => {
     req.flash("totalQty", totalQty);
     return res.redirect("back");
   }
-  let d = removeAscent(description)
+  
   let validTitle = regTitle.test(removeAscent(title))
   let validDes = regComment.test(removeAscent(description))
   let validPrice = regNumber.test(price)
