@@ -43,7 +43,8 @@ toTop.addEventListener("click", () => {
 });
 //slide
 let slideIndex = 1;
-	showSlides(slideIndex)
+try{
+  showSlides(slideIndex)
 	function plusSlides(n) {
 	  showSlides(slideIndex += n);
 	}
@@ -51,16 +52,21 @@ let slideIndex = 1;
 	function currentSlide(n) {
 	  showSlides(slideIndex = n);
 	}
-	
 	 function showSlides(n) {
-	  const slides = document.getElementsByClassName("mySlides");
-	  if (n > slides.length) {slideIndex = 1}    
+    const slides = document.getElementsByClassName("mySlides");
+    if(slides){
+      if (n > slides.length) {slideIndex = 1}    
 	  if (n < 1) {slideIndex = slides.length}
 	  for (let i = 0; i < slides.length; i++) {
 	      slides[i].style.display = "none";  
 	  }
 	  slides[slideIndex-1].style.display = "block";  
+    }
 	}
+}catch{
+
+}
+	
 
 // INFO
 const password = document.querySelector("#password");
@@ -93,6 +99,7 @@ addToCart.forEach(function (btn) {
 
 //UPDATE STATUS
 let statuses = document.querySelectorAll(".status-line");
+
 let hiddenInput = document.querySelector("#hiddenInput");
 let order = hiddenInput ? hiddenInput.value : null;
 order = JSON.parse(order);
@@ -112,6 +119,5 @@ function updateStatus(order) {
     }
   }
 }
-
 updateStatus(order);
 

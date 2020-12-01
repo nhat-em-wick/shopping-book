@@ -1,74 +1,73 @@
 <div class="container home-color">
-	<div class="row">
-		<div class="col-2 lorem">
-			<h1>It's Your Love.<br>Tell Your Story.</h1>
+  <div class="row">
+    <div class="col-2 lorem">
+      <h1>It's Your Love.<br>Tell Your Story.</h1>
 
-			<a href="/products" class="btn-1">Get Started</a>
-		</div>
-		<div class="col-2">
-			<img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1603504743/book3_hvghcq.jpg">
-		</div>
-	</div>
+      <a href="/products" class="btn-1">Get Started</a>
+    </div>
+    <div class="col-2">
+      <img src="https://res.cloudinary.com/coder-nhatpro/image/upload/v1603504743/book3_hvghcq.jpg">
+    </div>
+  </div>
 </div>
 
-<% if(featureds!=0){ %> 
+<% if(featureds!=0){ %>
 <div class="categories">
-	<div class="small-container">
-		
-		<h2 class="title">Sản Phẩm Nổi Bật</h2>
-		<div class="row" id="featured">
-			<% featureds.forEach(featured =>{ %>
-				<div class="col-4">
-					<div class="new-box">
-					  <img src="<%= featured.image %>">
-					  <div class="new-link">
-						<a href="/products/view/<%= featured._id %>" class="button">XEM SẢN PHẨM</a>
-					  </div>
-					</div>
-					<p id="gia"> <%= featured.price.toLocaleString('de-DE', { style: 'currency', currency: 'VND' }) %></p>
-				  </div>
-			<% }) %>
-		</div>
-	</div>
+  <div class="small-container">
+
+    <h2 class="title">Sản Phẩm Nổi Bật</h2>
+    <div class="row" id="featured">
+      <% featureds.forEach(featured =>{ %>
+      <div class="col-4">
+        <div class="new-box">
+          <img src="<%= featured.image %>">
+          <div class="new-link">
+            <a href="/products/view/<%= featured._id %>" class="button">XEM SẢN PHẨM</a>
+          </div>
+        </div>
+        <p id="gia"> <%= featured.price.toLocaleString('de-DE', { style: 'currency', currency: 'VND' }) %></p>
+      </div>
+      <% }) %>
+    </div>
+  </div>
 </div>
 <% } %>
 
-<% if(latests!=0){ %> 
+<% if(latests!=0){ %>
 <div class="categories">
-	<div class="small-container">
-		<h2 class="title">Sản Phẩm Mới Nhất</h2>
-		<div class="row" id="latest">
-			<% latests.forEach(latest =>{ %>
-				<div class="col-4">
-					<div class="new-box">
-					  <img src="<%= latest.image %>">
-					  <div class="new-link">
-						<a href="/products/view/<%= latest._id %>" class="button">XEM SẢN PHẨM</a>
-					  </div>
-					</div>
-					<p id="gia"><%= latest.price.toLocaleString('de-DE', { style: 'currency', currency: 'VND' }) %></p>
-				  </div>
-			<% }) %>
-		</div>
-	
-	</div>
+  <div class="small-container">
+    <h2 class="title">Sản Phẩm Mới Nhất</h2>
+    <div class="row" id="latest">
+      <% latests.forEach(latest =>{ %>
+      <div class="col-4">
+        <div class="new-box">
+          <img src="<%= latest.image %>">
+          <div class="new-link">
+            <a href="/products/view/<%= latest._id %>" class="button">XEM SẢN PHẨM</a>
+          </div>
+        </div>
+        <p id="gia"><%= latest.price.toLocaleString('de-DE', { style: 'currency', currency: 'VND' }) %></p>
+      </div>
+      <% }) %>
+    </div>
+  </div>
 </div>
-<% } %> 
+<% } %>
 
-<% if(reviews!=0){ %> 
+<% if(reviews!=0){ %>
 <div class="testimonial">
-	<h2 class="title">Chia Sẽ Của Khách Hàng</h2>
-	<div class="slideshow-container">
-	<div id="show">
-		<% reviews.forEach(review =>{ %>
-			<div class="mySlides">
-				<q><%= review.content %></q>
-				<p class="author">- <%= review.customerId.name %></p>
-		  </div>
-		<% }) %>
-	</div>
-	<a class="prev" onclick="plusSlides(-1)">❮</a>
-	<a class="next" onclick="plusSlides(1)">❯</a>
-	</div>
-</div>	
+  <h2 class="title">Chia Sẽ Của Khách Hàng</h2>
+  <div class="slideshow-container">
+    <div id="show">
+      <% reviews.forEach(review =>{ %>
+      <div class="mySlides">
+        <q><%= review.content %></q>
+        <p class="author">- <%= review.customerId.name %></p>
+      </div>
+      <% }) %>
+    </div>
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+  </div>
+</div>
 <% } %>
