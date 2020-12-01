@@ -205,11 +205,11 @@ module.exports.adminSearchProduct = async (req, res) => {
     if (matchedProducts.length < 1) {
       req.flash("error", `Không tìm thấy sản phẩm: ${q}`);
       req.flash("q", q);
-      res.render("admin/search_products");
+      res.render("admin/products/search_products");
     } else {
       req.flash("q", q);
       res.render(
-        "admin/admin_product",
+        "admin/products/search_products",
         pagination(page, 6, matchedProducts)
       );
     }
