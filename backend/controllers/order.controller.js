@@ -14,7 +14,7 @@ module.exports.order = async (req, res) => {
   try {
     const order = new orderModel({
       customerId: req.user._id,
-      items: req.session.cart.items,
+      items: req.session.products,
       phone: phone,
       address: address,
       totalQty: req.session.cart.totalQty,
@@ -29,6 +29,7 @@ module.exports.order = async (req, res) => {
       const updateProduct = await product.save();
     }
     delete req.session.cart;
+    delete req.session.products;
     req.flash('success', "Đặt hàng thành công");
     res.redirect("/orders");
   } catch (e) {
@@ -39,18 +40,19 @@ module.exports.order = async (req, res) => {
 module.exports.showOrderUser = async (req, res) => {
   try {
     const id = mongoose.Types.ObjectId(req.user._id);
-    let orders = await orderModel.find({ customerId: id }).sort({ 'createdAt': -1 });
+    let orders = await orderModel.find({ customerId: id }).populate({path: 'items.item', model:'Products'}).sort({ 'createdAt': -1 });
+   
     return res.render("orders/index", { orders: orders, moment: moment });
-  } catch (err) {
+  } catch (e) {
     res.status(500).send('lỗi server');
   }
 };
 
 module.exports.itemOrder = async (req, res) => {
   try {
-    let order = await orderModel.findById(req.params.id);
+    let order = await orderModel.findById(req.params.id).populate({path: 'items.item', model:'Products'});
     return res.render("orders/view", { order: order });
-  } catch (err) {
+  } catch (e) {
     res.status(500).send('lỗi server');
   }
 };
@@ -58,8 +60,8 @@ module.exports.itemOrder = async (req, res) => {
 module.exports.cancelOrder = async (req, res) => {
   try {
     let order = await orderModel.findById(req.params.id);
-    for (let productCart of Object.values(order.items)) {
-      const product = await productModel.findById(productCart.item._id);
+    for (let productCart of order.items) {
+      const product = await productModel.findById(productCart.item);
       product.totalQty += productCart.qty;
       product.soldNo -= productCart.qty;
       const updateProduc = await product.save();
@@ -88,6 +90,7 @@ module.exports.adminOrder = async (req, res) => {
     let perPage = 8; // item in page
     let orders = await orderModel.find().populate("customerId", "-password").sort({ 'createdAt': -1 });
     res.render("admin/orders/admin_order", pagination(page, perPage, orders,0, moment));
+    
   } catch (e) {
     res.status(500).send('lỗi server');
   }

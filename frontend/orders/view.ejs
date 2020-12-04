@@ -10,11 +10,11 @@
                 <th>Số lượng</th>
                 <th>Tạm tính</th>
             </tr>
-            <% for(let product of Object.values(order.items)){ %>
+            <% for(let product of (order.items)){ %>
             <tr class="item">
                 <td>
                     <div class="cart-info">
-                        <img src="<%= product.item.image %> ">
+                        <img src="<%= product.item.image %>">
                         <div>
                             <p><%= product.item.title %></p>
                             <% if(order.status == "Giao hàng thành công"){ %> 

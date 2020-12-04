@@ -84,7 +84,7 @@ module.exports.categoryProduct = async (req, res) => {
 module.exports.categoryProductSearch = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   
-  const category = req.params.id.replace(/-/g, " ");
+  const category = req.params.id;
   const q = req.query.q;
   try {
     let categories = await categoryModel.find();
@@ -92,9 +92,9 @@ module.exports.categoryProductSearch = async (req, res) => {
     // lọc sản phẩm theo danh mục
     let matchedProductsCategory = categoryProduct.filter((product) => {
       return (
-        removeAscent(product.category.name)
+        product.category.link
           .toLowerCase()
-          .indexOf(category.toLowerCase()) !== -1
+          .indexOf(category) !== -1
       );
     });
     // tìm sản phẩm theo danh mục
@@ -144,23 +144,9 @@ module.exports.singleProduct = async (req, res) => {
   }
 };
 
-module.exports.featuredProducts = async (req, res) => {
-  try {
-    let products = await productModel.find({soldNo: {$gt: 5}});
-    res.json(pagination(1, 4, products));
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-};
 
-module.exports.latestProducts = async (req, res) => {
-  try {
-    let products = await productModel.find().sort({ 'createdAt': -1 });
-    res.json(pagination(1, 6, products));
-  } catch (e) {
-    res.status(500).send('lỗi server');
-  }
-}
+
+
 
 // ADMIN
 

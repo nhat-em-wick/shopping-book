@@ -24,7 +24,7 @@
         <%= moment(order.createdAt).format('MM/DD/YYYY') %>
       </td>
       <td>
-        <% for (let product of Object.values(order.items)) { %>
+        <% for (let product of (order.items)) { %>
         <%= product.item.title %><br>
         <% } %>
       </td>
